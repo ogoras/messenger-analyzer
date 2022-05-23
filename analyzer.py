@@ -20,8 +20,29 @@ def read_folder(conversation_folder):
 
     return messages
 
+thread_types = []
+
 for conversation_folder in os.listdir(master_folder):
     conversation_folder = os.path.join(master_folder, conversation_folder)
     messages = read_folder(conversation_folder)
-    print(conversation_folder)
+    # print(conversation_folder)
     print_fb(messages[0]["title"])
+
+
+#TYPES:
+# Subscribe - someone joined (for group chats)
+# Unsubscribe - someone left (for group chats)
+# Share - someone shared a link
+# Call - someone called (video or audio)
+# Generic - everything else
+
+# Generic messages can have different attributes (and sometimes more than one):
+#   "content" - text
+#   "photos" - photos
+#   "videos" - videos
+#   "sticker" - stickers
+#   "audio_files" - voice messages and the like
+#   "files" - other attached files
+#   "gif" - gifs
+#   "reactions" - reactions : {"reaction": "some emoji", "actor": "some user"}
+
