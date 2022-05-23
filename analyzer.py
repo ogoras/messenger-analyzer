@@ -1,6 +1,7 @@
 import os
 #import JSON library
 import json
+import sys
 
 from numpy import size
 from loader import read_folder
@@ -48,20 +49,20 @@ def print_vocab(vocabulary, n=100, overall_vocabulary=None):
         else:
             print(str(i)+".", word, vocabulary[word], overall_vocabulary[word])
     
-def normalize_vocab(vocabulary):
+def normalize_vocab(vocabulary, bias=0):
     sum = 0.0
     for word in vocabulary:
-        sum += vocabulary[word]
-    print(sum)
+        sum += vocabulary[word] + bias
+
     normalized = {}
     for word in vocabulary:
-        normalized[word] = vocabulary[word] * 100/sum
+        normalized[word] = (vocabulary[word] + bias) * 100/sum
     return normalized
 
 def relative_vocab(vocabulary, master_vocabulary):
     relative_vocabulary = {}
     for word in vocabulary:
-        relative_vocabulary[word] = vocabulary[word]/master_vocabulary[word]
+        relative_vocabulary[word] = vocabulary[word]/ master_vocabulary[word]
     return relative_vocabulary
 
 # for sender in all_vocabularies:
@@ -75,7 +76,7 @@ for sender in all_vocabularies.keys():
 
 # print senders from largest vocabulary to smallest
 sorted_vocabularies = sorted(vocabulary_sizes, key=vocabulary_sizes.get, reverse=True)
-print("Sorted vocabularies:")
+
 i = 0
 magnitude_order = float("inf")
 
@@ -91,12 +92,12 @@ for sender in sorted_vocabularies:
         else:
             average_vocabulary[word] = all_vocabularies[sender][word]/total_words[sender]*magnitude_order
 
-average_vocabulary = normalize_vocab(average_vocabulary)
+average_vocabulary_normalized = normalize_vocab(average_vocabulary, 0.01)
 
-for sender in ["your name"]:
+for sender in ["your name", "your friend's name"]:
     print(sender)
-    print_vocab(relative_vocab(normalize_vocab(all_vocabularies[sender]), average_vocabulary), 100, all_vocabularies[sender])
+    print_vocab(relative_vocab(normalize_vocab(all_vocabularies[sender]), average_vocabulary_normalized), 100, all_vocabularies[sender])
 
 
-print("Average vocabulary:")
-print_vocab(average_vocabulary, 100)
+# print("Average vocabulary:")
+# print_vocab(average_vocabulary, 100)
