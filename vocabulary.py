@@ -55,10 +55,12 @@ class VocabularyAnalyzer:
 
             content = decode_fb(message["content"])
 
+            ignore_this_message = False
             for word in content.split():
                 word = word.lower()
                 #check if words starts with XDDDD...
-                if word.startswith("x" + "d" * 5000) or word in words_to_match:
+                if word.startswith("x" + "d" * 5000) or word in words_to_match and not ignore_this_message:
+                    ignore_this_message = True
                     if self.message_cache != None:
                         print_message(self.message_cache)
                     print_message(message)
