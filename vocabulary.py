@@ -1,4 +1,4 @@
-from lib import timestamp_to_date_string, print_fb, decode_fb, print_message
+from lib import decode_fb, print_message
 
 def print_vocab(vocabulary, n=100, overall_vocabulary=None, master_vocabulary=None):
     print("Vocabulary size: " + str(len(vocabulary)))
@@ -47,12 +47,12 @@ class VocabularyAnalyzer:
                     print("----------")
 
         if "content" in message and message["type"] == "Generic":
-            sender = message["sender_name"].encode('latin1').decode('utf8')
+            sender = decode_fb(message["sender_name"])
             if sender not in self.all_vocabularies:
                 self.all_vocabularies[sender] = {}
             vocabulary = self.all_vocabularies[sender]
 
-            content = message["content"].encode('latin1').decode('utf8')
+            content = decode_fb(message["content"])
 
             for word in content.split():
                 word = word.lower()

@@ -2,7 +2,7 @@ import os, sys
 
 from loader import read_folder
 from vocabulary import print_vocab, VocabularyAnalyzer
-from lib import print_fb
+from lib import decode_fb
 
 if __name__ == "__main__":
     master_folder = os.path.join("messages", "inbox")
@@ -24,7 +24,7 @@ if __name__ == "__main__":
                 vocab_analyzer.add_message_to_vocabulary(message,words_to_match)
 
                 if "content" in message and message["type"] == "Generic":
-                    sender = message["sender_name"].encode('latin1').decode('utf8')
+                    sender = decode_fb(message["sender_name"])
                     if sender not in messages_count:
                         messages_count[sender] = 0
                     messages_count[sender] += 1

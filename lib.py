@@ -1,7 +1,7 @@
 import datetime
 
 def print_fb(string):
-    print(string.encode('latin1').decode('utf8'))
+    print(decode_fb(string))
 
 def timestamp_to_date_string(timestamp):
     #hour and date
@@ -12,11 +12,11 @@ def decode_fb(string):
 
 def print_message(message):
     print(timestamp_to_date_string(message["timestamp_ms"]))
-    print(message["sender_name"])
+    print_fb(message["sender_name"])
     if "content" in message:
-        print(message["content"])
+        print_fb(message["content"])
     if "photos" in message:
-        print("photos")
+        print(message["photos"])
     if "videos" in message:
-        print("videos")
+        print(message["videos"])
     print("")
