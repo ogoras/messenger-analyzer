@@ -1,3 +1,5 @@
+from lib import timestamp_to_date_string, print_fb, decode_fb, print_message
+
 def print_vocab(vocabulary, n=100, overall_vocabulary=None, master_vocabulary=None):
     print("Vocabulary size: " + str(len(vocabulary)))
     i = 0
@@ -35,8 +37,15 @@ class VocabularyAnalyzer:
         self.vocabulary_sizes = {}
         self.total_vocabulary = {}
         self.average_vocabulary_normalized = None
+        self.message_cache = None
 
-    def add_message_to_vocabulary(self, message):
+    def add_message_to_vocabulary(self, message, words_to_match = []):
+        if (self.print_next > 0):
+                print_message(message)
+                self.print_next -= 1
+                if self.print_next == 0:
+                    print("----------")
+
         if "content" in message and message["type"] == "Generic":
             sender = message["sender_name"].encode('latin1').decode('utf8')
             if sender not in self.all_vocabularies:
@@ -44,8 +53,15 @@ class VocabularyAnalyzer:
             vocabulary = self.all_vocabularies[sender]
 
             content = message["content"].encode('latin1').decode('utf8')
+
             for word in content.split():
                 word = word.lower()
+                #check if words starts with XDDDD...
+                if word.startswith("x" + "d" * 50):
+                    if self.message_cache != None:
+                        print_message(self.message_cache)
+                    print_message(message)
+                    self.print_next = 7
                 if word in vocabulary:
                     vocabulary[word] += 1
                 else:
@@ -54,6 +70,8 @@ class VocabularyAnalyzer:
                     self.total_words[sender] += 1
                 else:
                     self.total_words[sender] = 1
+            
+            self.message_cache = message
 
     def calculate_average_vocab(self):
         self.average_vocabulary = {}
