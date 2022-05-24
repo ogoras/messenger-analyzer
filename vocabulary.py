@@ -1,12 +1,15 @@
-def print_vocab(vocabulary, n=100, overall_vocabulary=None):
-    print("Vocabulary size:" + str(len(vocabulary)))
+def print_vocab(vocabulary, n=100, overall_vocabulary=None, master_vocabulary=None):
+    print("Vocabulary size: " + str(len(vocabulary)))
     i = 0
     for word in sorted(vocabulary, key=vocabulary.get, reverse=True)[:n]:
         i += 1
-        if overall_vocabulary == None:
-            print(str(i)+".", word, vocabulary[word])
-        else:
-            print(str(i)+".", word, vocabulary[word], overall_vocabulary[word])
+        print_string = str(i) + ". " + word + " " + str(vocabulary[word])
+        if overall_vocabulary != None:
+            print_string += " used " + str(overall_vocabulary[word]) + " times"
+            if master_vocabulary != None: 
+                print_string += " out of " + str(master_vocabulary[word])
+        print(print_string)
+    print("")
 
 def relative_vocab(vocabulary, master_vocabulary):
     relative_vocabulary = {}
@@ -30,6 +33,7 @@ class VocabularyAnalyzer:
         self.total_words = {}
         self.average_vocabulary = {}
         self.vocabulary_sizes = {}
+        self.total_vocabulary = {}
         self.average_vocabulary_normalized = None
 
     def add_message_to_vocabulary(self, message):
@@ -53,6 +57,7 @@ class VocabularyAnalyzer:
 
     def calculate_average_vocab(self):
         self.average_vocabulary = {}
+        self.total_vocabulary = {}
 
         for sender in self.all_vocabularies:
             self.vocabulary_sizes[sender] = len(self.all_vocabularies[sender])
@@ -61,15 +66,17 @@ class VocabularyAnalyzer:
             magnitude_order = len(str(self.vocabulary_sizes[sender]))
             for word in self.all_vocabularies[sender]:
                 if word in self.average_vocabulary:
+                    self.total_vocabulary[word] += self.all_vocabularies[sender][word]
                     self.average_vocabulary[word] += self.all_vocabularies[sender][word]/self.total_words[sender]*magnitude_order
                 else:
+                    self.total_vocabulary[word] = self.all_vocabularies[sender][word]
                     self.average_vocabulary[word] = self.all_vocabularies[sender][word]/self.total_words[sender]*magnitude_order
         
         self.average_vocabulary_normalized = normalize_vocab(self.average_vocabulary, 0.01)
 
     def get_vocab(self, sender = None):
         if sender == None:
-            return self.average_vocabulary
+            return self.total_vocabulary
         else:
             return self.all_vocabularies[sender]
 

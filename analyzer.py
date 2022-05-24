@@ -11,6 +11,8 @@ if __name__ == "__main__":
 
     vocab_analyzer = VocabularyAnalyzer()
 
+    messages_count = {}
+
     for conversation_folder in os.listdir(master_folder):
         conversation_folder = os.path.join(master_folder, conversation_folder)
         messages = read_folder(conversation_folder)
@@ -19,15 +21,24 @@ if __name__ == "__main__":
             for message in message_file["messages"]:
                 vocab_analyzer.add_message_to_vocabulary(message)
 
+                if "content" in message and message["type"] == "Generic":
+                    sender = message["sender_name"].encode('latin1').decode('utf8')
+                    if sender not in messages_count:
+                        messages_count[sender] = 0
+                    messages_count[sender] += 1
+
     vocab_analyzer.calculate_average_vocab()
 
     print("--------------------")
     print("DONE")
     print("--------------------")
 
-    for sender in ["your name", "your friend's name"]:
-        print(sender)
-        print_vocab(vocab_analyzer.characteristic_vocab(sender), 100, vocab_analyzer.get_vocab(sender))
+    sorted_messages_count = sorted(messages_count.items(), key=lambda x: x[1], reverse=True)
 
-    print("Average vocabulary:")
-    print_vocab(vocab_analyzer.get_vocab(), 100)
+    for sender, count in sorted_messages_count[:10]:
+        print(sender, count)
+        print_vocab(vocab_analyzer.characteristic_vocab(sender), 10, vocab_analyzer.get_vocab(sender), vocab_analyzer.get_vocab())
+
+    # print("")
+    # print("Average vocabulary:")
+    # print_vocab(vocab_analyzer.get_vocab(), 100)
