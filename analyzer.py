@@ -40,14 +40,22 @@ if __name__ == "__main__":
     n_senders = 10
     n_words = 10
     if len(sys.argv) > 1:
+        #check if it's integer
         n_senders = int(sys.argv[1])
         if len(sys.argv) > 2:
             n_words = int(sys.argv[2])
+
+    if len(sys.argv) > 4:
+        sender = sys.argv[4]
+        print(sender, messages_count[sender])
+        print_vocab(vocab_analyzer.get_vocab(sender), n_words)
+        print_vocab(vocab_analyzer.characteristic_vocab(sender), n_words, vocab_analyzer.get_vocab(sender), vocab_analyzer.get_vocab())
+
         
     for sender, count in sorted_messages_count[:n_senders]:
         print(sender, count)
         print_vocab(vocab_analyzer.characteristic_vocab(sender), n_words, vocab_analyzer.get_vocab(sender), vocab_analyzer.get_vocab())
 
     # print("")
-    # print("Average vocabulary:")
+    # print("Total vocabulary:")
     # print_vocab(vocab_analyzer.get_vocab(), 100)

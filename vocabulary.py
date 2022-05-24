@@ -58,7 +58,7 @@ class VocabularyAnalyzer:
             for word in content.split():
                 word = word.lower()
                 #check if words starts with XDDDD...
-                if word.startswith("x" + "d" * 50):
+                if word.startswith("x" + "d" * 5000) or word in words_to_match:
                     if self.message_cache != None:
                         print_message(self.message_cache)
                     print_message(message)
