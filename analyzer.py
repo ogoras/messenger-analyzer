@@ -1,14 +1,21 @@
+from doctest import master
 import os, sys
 
-from loader import read_folder
+from loader import read_folder, load_dirs, save_dir
 from vocabulary import print_vocab, VocabularyAnalyzer
 from lib import decode_fb
 
 if __name__ == "__main__":
-    master_folder = "."
     if len(sys.argv) > 1:
         master_folder = sys.argv[1]
-        # convert single backslashes to double backslashes
+        save_dir(master_folder)
+    else:
+        try:
+            master_folder = load_dirs()[-1]
+        except IndexError:
+            print("No Facebook data folder found. Please run:\n\tpython analyzer.py <path to folder>\n")
+            print("first to remember the Facebook data folder.")
+            sys.exit(1)
 
     master_folder = os.path.join(master_folder, "messages", "inbox")
 
@@ -16,7 +23,7 @@ if __name__ == "__main__":
         print("Folder does not exist:", master_folder)
         print("Error: Facebook data folder not found. Try running:\n\tpython analyzer.py <path to folder>")
         print("Remember to choose the correct folder, it must include the 'messages' folder inside it!")
-        sys.exit(1)
+        exit()
 
     vocab_analyzer = VocabularyAnalyzer()
 

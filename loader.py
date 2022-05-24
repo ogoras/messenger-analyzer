@@ -34,3 +34,21 @@ def read_folder(conversation_folder):
                 messages.append(json.load(f))
 
     return messages
+
+def load_dirs():
+    if not os.path.exists("saved_dirs.json"):
+        return []
+    with open("saved_dirs.json", "r") as f:
+        return json.load(f)
+
+def save_dir(dir_path):
+    dir_list = load_dirs()
+
+    if dir_path in dir_list:
+        #remove it
+        dir_list.remove(dir_path)
+
+    dir_list.append(dir_path)
+
+    with open("saved_dirs.json", "w") as f:
+        json.dump(dir_list, f)
