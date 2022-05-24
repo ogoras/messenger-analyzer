@@ -2,7 +2,7 @@ from lexical_processing import process_word
 from lib import print_message, decode_fb
 
 class WordFinder:
-    def __init__(self, words_to_match = [], verbosity = 0):
+    def __init__(self, words_to_match = [], verbosity = 0, filter_senders = [], filter_senders_inverse = False):
         self.message_cache = None
         self.print_next = 0
         self.words_to_match = words_to_match
@@ -11,6 +11,8 @@ class WordFinder:
         self.count = 0
         self.counts_by_sender = {}
         self.messages_by_sender = {}
+        self.filter_senders = filter_senders
+        self.filter_senders_inverse = filter_senders_inverse
 
     def search_message(self, message):
         if (self.print_next > 0):
@@ -19,7 +21,9 @@ class WordFinder:
             if self.print_next == 0:
                 print("----------")
 
-        if "content" in message and message["type"] == "Generic":
+        sender = decode_fb(message["sender_name"])
+
+        if "content" in message and message["type"] == "Generic" and ((sender not in self.filter_senders) ^ (self.filter_senders_inverse)):
             content = decode_fb(message["content"])
 
             ignore_this_message = False
@@ -29,11 +33,11 @@ class WordFinder:
 
                 if word in self.words_to_match:
                     self.count += 1
-                    self.counts_by_sender[decode_fb(message["sender_name"])] = self.counts_by_sender.get(decode_fb(message["sender_name"]), 0) + 1
+                    self.counts_by_sender[sender] = self.counts_by_sender.get(sender, 0) + 1
 
                     if not ignore_this_message:
                         self.message_count += 1
-                        self.messages_by_sender[decode_fb(message["sender_name"])] = self.messages_by_sender.get(decode_fb(message["sender_name"]), 0) + 1
+                        self.messages_by_sender[sender] = self.messages_by_sender.get(sender, 0) + 1
                         if self.message_cache != None:
                             print_message(self.message_cache)
                         if self.verbosity > 1:
