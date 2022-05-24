@@ -5,14 +5,25 @@ from vocabulary import print_vocab, VocabularyAnalyzer
 from lib import decode_fb
 
 if __name__ == "__main__":
-    master_folder = os.path.join("messages", "inbox")
+    master_folder = "."
+    if len(sys.argv) > 1:
+        master_folder = sys.argv[1]
+        # convert single backslashes to double backslashes
+
+    master_folder = os.path.join(master_folder, "messages", "inbox")
+
+    if not os.path.exists(master_folder):
+        print("Folder does not exist:", master_folder)
+        print("Error: Facebook data folder not found. Try running:\n\tpython analyzer.py <path to folder>")
+        print("Remember to choose the correct folder, it must include the 'messages' folder inside it!")
+        sys.exit(1)
 
     vocab_analyzer = VocabularyAnalyzer()
 
     messages_count = {}
     words_to_match = []
-    if len(sys.argv) > 3:
-        words_to_match = sys.argv[3].split()
+    if len(sys.argv) > 5:
+        words_to_match = sys.argv[5].split()
         print(words_to_match)
 
     for conversation_folder in os.listdir(master_folder):
@@ -39,11 +50,11 @@ if __name__ == "__main__":
 
     n_senders = 10
     n_words = 10
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 2:
         #check if it's integer
-        n_senders = int(sys.argv[1])
-        if len(sys.argv) > 2:
-            n_words = int(sys.argv[2])
+        n_senders = int(sys.argv[2])
+        if len(sys.argv) > 3:
+            n_words = int(sys.argv[3])
 
     if len(sys.argv) > 4:
         sender = sys.argv[4]
