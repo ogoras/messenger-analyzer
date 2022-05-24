@@ -38,6 +38,7 @@ class VocabularyAnalyzer:
         self.total_vocabulary = {}
         self.average_vocabulary_normalized = None
         self.message_cache = None
+        self.print_next = 0
 
     def add_message_to_vocabulary(self, message, words_to_match = []):
         if (self.print_next > 0):
