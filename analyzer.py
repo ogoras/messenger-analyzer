@@ -21,6 +21,10 @@ if __name__ == "__main__":
 
     vocab_analyzer.calculate_average_vocab()
 
+    print("--------------------")
+    print("DONE")
+    print("--------------------")
+
     for sender in ["your name", "your friend's name"]:
         print(sender)
         print_vocab(vocab_analyzer.characteristic_vocab(sender), 100, vocab_analyzer.get_vocab(sender))
