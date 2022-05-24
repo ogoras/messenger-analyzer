@@ -1,4 +1,5 @@
 from lib import decode_fb, print_message
+from lexical_processing import process_word
 import loader
 
 def print_vocab(vocabulary, n=100, overall_vocabulary=None, master_vocabulary=None):
@@ -38,8 +39,6 @@ class VocabularyAnalyzer:
         self.vocabulary_sizes = {}
         self.total_vocabulary = {}
         self.average_vocabulary_normalized = None
-        self.message_cache = None
-        self.print_next = 0
         self.messages_count = {}
         self.sorted = False
 
@@ -51,13 +50,8 @@ class VocabularyAnalyzer:
         self.average_vocabulary_normalized_sorted = []
         self.messages_count_sorted = []
 
-    def add_message_to_vocabulary(self, message, words_to_match = []):
+    def add_message_to_vocabulary(self, message):
         self.sorted = False
-        if (self.print_next > 0):
-                print_message(message)
-                self.print_next -= 1
-                if self.print_next == 0:
-                    print("----------")
 
         if "content" in message and message["type"] == "Generic":
             sender = decode_fb(message["sender_name"])
@@ -70,18 +64,9 @@ class VocabularyAnalyzer:
 
             content = decode_fb(message["content"])
 
-            ignore_this_message = False
             for word in content.split():
-                #strip punctuation
-                word = word.strip('.,!?;:*()[]{}<>…"\'/\\”“')
-                word = word.lower()
-                #check if words starts with XDDDD...
-                if word.startswith("x" + "d" * 5000) or word in words_to_match and not ignore_this_message:
-                    ignore_this_message = True
-                    if self.message_cache != None:
-                        print_message(self.message_cache)
-                    print_message(message)
-                    self.print_next = 7
+                process_word(word)
+
                 if word in vocabulary:
                     vocabulary[word] += 1
                 else:
@@ -90,8 +75,6 @@ class VocabularyAnalyzer:
                     self.total_words[sender] += 1
                 else:
                     self.total_words[sender] = 1
-            
-            self.message_cache = message
 
     def calculate_average_vocab(self):
         self.sorted = False
