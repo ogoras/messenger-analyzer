@@ -1,4 +1,4 @@
-import os
+import os, sys
 
 from loader import read_folder
 from vocabulary import print_vocab, VocabularyAnalyzer
@@ -35,9 +35,16 @@ if __name__ == "__main__":
 
     sorted_messages_count = sorted(messages_count.items(), key=lambda x: x[1], reverse=True)
 
-    for sender, count in sorted_messages_count[:10]:
+    n_senders = 10
+    n_words = 10
+    if len(sys.argv) > 1:
+        n_senders = int(sys.argv[1])
+        if len(sys.argv) > 2:
+            n_words = int(sys.argv[2])
+        
+    for sender, count in sorted_messages_count[:n_senders]:
         print(sender, count)
-        print_vocab(vocab_analyzer.characteristic_vocab(sender), 10, vocab_analyzer.get_vocab(sender), vocab_analyzer.get_vocab())
+        print_vocab(vocab_analyzer.characteristic_vocab(sender), n_words, vocab_analyzer.get_vocab(sender), vocab_analyzer.get_vocab())
 
     # print("")
     # print("Average vocabulary:")

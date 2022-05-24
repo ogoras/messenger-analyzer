@@ -5,7 +5,7 @@ In order to use this tool, you need to [download your messages from Facebook](ht
 To run, use:
 
 ```
-python analyze.py
+python analyze.py [number of people to print] [number of words to print per person]
 ```
 
 By default, the program prints 10 characteristic words for 10 people that have sent the most messages. The format is:
