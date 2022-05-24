@@ -45,8 +45,8 @@ class WordFinder:
                         self.print_next = self.verbosity - 2 if self.verbosity > 1 else 0
                         ignore_this_message = True
 
-            if self.verbosity > 3:
-                self.message_cache = message
+        if self.verbosity > 3:
+            self.message_cache = message
     
     def print_results(self):
         print("Found " + str(self.count) + " words in " + str(self.message_count) + " messages")
