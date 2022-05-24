@@ -1,4 +1,5 @@
 from lib import decode_fb, print_message
+import re
 
 def print_vocab(vocabulary, n=100, overall_vocabulary=None, master_vocabulary=None):
     print("Vocabulary size: " + str(len(vocabulary)))
@@ -57,6 +58,8 @@ class VocabularyAnalyzer:
 
             ignore_this_message = False
             for word in content.split():
+                #strip punctuation
+                word = word.strip('.,!?;:*()[]{}<>…"\'/\\”“')
                 word = word.lower()
                 #check if words starts with XDDDD...
                 if word.startswith("x" + "d" * 5000) or word in words_to_match and not ignore_this_message:

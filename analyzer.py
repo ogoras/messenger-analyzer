@@ -9,7 +9,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Analyze your messages')
     parser.add_argument('-i', '--input', help='Your Facebook data folder (should contain the folder "messages" inside it)')
     parser.add_argument('-p', '--person', help='Name(s) of person(s) you want to know characteristic words of', nargs='+')
-    parser.add_argument('-t', '--top-senders', help='Number of top senders to show', default=0, type=int)
+    parser.add_argument('-t', '--top-senders', help='Number of top senders to show', default=0, const=10, type=int, nargs='?')
     parser.add_argument('-n', '--number-of-words', help='Number of words to print per person', default=10, type=int)
     parser.add_argument('-w', '--words-to-match', help='Words to match (separated by commas)', default="")
     parser.add_argument('-v', '--verbose', help='Additional info', action='count', default=0)
