@@ -15,7 +15,7 @@ import json
 #   "sticker" - stickers
 #   "audio_files" - voice messages and the like
 #   "files" - other attached files
-#   "gif" - gifs
+#   "gifs" - gifs
 #   "reactions" - reactions : {"reaction": "some emoji", "actor": "some user"}
 
 # THREAD TYPES:
