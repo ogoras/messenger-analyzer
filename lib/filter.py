@@ -70,8 +70,17 @@ class SenderFilter(Filter):
             return message["sender_name"].startswith(self.sender)
         elif self.match == "right":
             return message["sender_name"].endswith(self.sender)
+        elif self.match == "contains":
+            return self.sender in message["sender_name"]
         else:
             raise Exception("Unknown match: " + self.match)
 
 def senders_filter(senders, match="whole", action="or"):
     return CompositeFilter([SenderFilter(sender, match) for sender in senders], action)
+
+class TypeFilter(Filter):
+    def __init__(self, type):
+        self.type = type
+
+    def filter(self, subfolder, conversation_folder, thread, message):
+        return message["type"] == self.type
