@@ -1,7 +1,6 @@
-import argparse, os, sys
+import argparse, sys
 
-from lib.loader import read_folder
-from lib.conversions import parse_folder
+from lib.loader import gen_messages, parse_folder
 from vocab.word_finder import WordFinder
 
 if __name__ == '__main__':
@@ -22,14 +21,7 @@ if __name__ == '__main__':
 
     word_finder = WordFinder(args.words_to_match.split(), args.verbose, filter_senders, args.filter_senders_inverse)
 
-    #TODO: turn this into a generator :D
-    for conversation_folder in os.listdir(master_folder):
-        conversation_folder = os.path.join(master_folder, conversation_folder)
-        messages = read_folder(conversation_folder)
-        # if (args.verbose > 1):
-        #     print_fb(messages[0]["title"])
-        for message_file in messages:
-            for message in message_file["messages"]:
-                word_finder.search_message(message)
+    for message in gen_messages(master_folder):
+        word_finder.search_message(message)
 
     word_finder.print_results()

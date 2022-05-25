@@ -1,8 +1,7 @@
 import argparse, os, sys
 
 from vocab.vocabulary_analyzer import VocabularyAnalyzer
-from lib.loader import read_folder
-from lib.conversions import print_fb, parse_folder
+from lib.loader import gen_messages, parse_folder
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
@@ -15,15 +14,8 @@ if __name__ == '__main__':
 
     vocab_analyzer = VocabularyAnalyzer()
 
-    #TODO: turn this into a generator :D
-    for conversation_folder in os.listdir(master_folder):
-        conversation_folder = os.path.join(master_folder, conversation_folder)
-        messages = read_folder(conversation_folder)
-        if (args.verbose > 1):
-            print_fb(messages[0]["title"])
-        for message_file in messages:
-            for message in message_file["messages"]:
-                vocab_analyzer.add_message_to_vocabulary(message)
+    for message in gen_messages(master_folder, verbose = args.verbose > 1):
+        vocab_analyzer.add_message_to_vocabulary(message)
 
     vocab_analyzer.calculate_average_vocab()
     vocab_analyzer.save_vocab()

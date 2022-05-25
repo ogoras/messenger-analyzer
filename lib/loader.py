@@ -1,5 +1,6 @@
 import os
 import json
+from lib.conversions import print_fb
 
 #TYPES:
 # Subscribe - someone joined (for group chats)
@@ -22,6 +23,29 @@ import json
 # RegularGroup - group chat
 # Regular - one on one
 
+def parse_folder(input, script_name):
+    if (input != None):
+        master_folder == input
+        save_dir(master_folder)
+    else:
+        try:
+            master_folder = load_dirs()[-1]
+        except IndexError:
+            print("No Facebook data folder found. Please run:\n\tpython " + script_name+  " -i <path to folder>\n")
+            print("first to remember the Facebook data folder.")
+            exit()
+    
+    master_folder = os.path.join(master_folder, "messages")
+
+    if not os.path.exists(master_folder):
+        print("Folder does not exist:", master_folder)
+        print("Error: Facebook data folder not found. Try running:\n\tpython " + script_name +  " -i <path to folder>")
+        print("Remember to choose the correct folder, it must include the 'messages' folder inside it!")
+        exit()
+    
+    return master_folder
+
+
 def read_folder(conversation_folder):
     messages = []
     for filename in os.listdir(conversation_folder):
@@ -34,6 +58,19 @@ def read_folder(conversation_folder):
                 messages.append(json.load(f))
 
     return messages
+
+def gen_messages(master_folder, filter=None, verbose=False):
+    #TODO: Filter class
+
+    for subfolder in ["archived_threads", "filtered_threads", "inbox"]:
+        for conversation_folder in os.listdir(os.path.join(master_folder, subfolder)):
+            conversation_folder = os.path.join(master_folder, subfolder, conversation_folder)
+            messages = read_folder(conversation_folder)
+            if (verbose):
+                print_fb(messages[0]["title"])
+            for message_file in messages:
+                for message in message_file["messages"]:
+                    yield message
 
 def load_dirs():
     if not os.path.exists("saved_dirs.json"):
