@@ -24,11 +24,11 @@ if __name__ == '__main__':
     if args.year:
         if args.month:
             if args.month == 12:
-                filter = TimeFilter(date_to_timestamp(args.year, 12), date_to_timestamp(args.year + 1, 1))
+                filter = filter.join(TimeFilter(date_to_timestamp(args.year, 12), date_to_timestamp(args.year + 1, 1)))
             else:
-                filter = TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1))
+                filter = filter.join(TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1)))
         else:
-            filter = TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
+            filter = filter.join(TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1)))
     if args.filter_senders:
         filter = filter.join(senders_filter(args.filter_senders))
 
