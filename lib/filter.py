@@ -17,10 +17,50 @@
 # 6. thread_type (regular, group)
 # 7. thread participants
 
-class Filter:
-    def __init__(self):
+from abc import ABC, abstractmethod
+
+class Filter(ABC):
+    @abstractmethod
+    def filter(self, subfolder, conversation_folder, thread, message):
         pass
+
+    def negate(self):
+        return NegationFilter(self)
     
-    #TODO: unmock
+    def join(self, other, action="and"):
+        return CompositeFilter(self, other, action)
+
+class EmptyFilter(Filter):
     def filter(self, subfolder, conversation_folder, thread, message):
         return True
+
+class CompositeFilter(Filter):
+    def __init__(self, filters = [], action="and"):
+        self.filters = filters
+        self.action = action
+        if action == "xor" and len(filters != 2):
+            raise Exception("XOR filter needs exactly 2 filters")
+
+    def filter(self, subfolder, conversation_folder, thread, message):
+        if self.action == "and":
+            return all([f.filter(subfolder, conversation_folder, thread, message) for f in self.filters])
+        elif self.action == "or":
+            return any([f.filter(subfolder, conversation_folder, thread, message) for f in self.filters])
+        elif self.action == "xor":
+            return (self.filters[0].filter(subfolder, conversation_folder, thread, message) ^ self.filters[1].filter(subfolder, conversation_folder, thread, message))
+        else:
+            raise Exception("Unknown action: " + self.action)
+
+class NegationFilter(Filter):
+    def __init__(self, filter):
+        self.filter = filter
+
+    def filter(self, subfolder, conversation_folder, thread, message):
+        return not self.filter.filter(subfolder, conversation_folder, thread, message)
+
+class SenderFilter(Filter):
+    def __init__(self, senders):
+        self.senders = senders
+
+    def filter(self, subfolder, conversation_folder, thread, message):
+        return message["sender"] in self.senders
