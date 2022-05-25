@@ -1,3 +1,3 @@
 def process_word(word):
-    word = word.strip('.,!?;:*()[]{}<>…"\'/\\”“')
+    word = word.strip('.,!?;:*()[]{}<>…"\'/\\”“„-')
     return word.lower()
