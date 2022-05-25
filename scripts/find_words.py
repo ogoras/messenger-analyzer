@@ -20,7 +20,7 @@ if __name__ == '__main__':
         filter_senders = args.filter_senders
 
     word_finder = WordFinder(args.words_to_match.split(), args.verbose, filter_senders, args.filter_senders_inverse)
-
+    # move filter_senders to gen_messages
     for message in gen_messages(master_folder):
         word_finder.search_message(message)
 

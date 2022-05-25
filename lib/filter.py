@@ -59,8 +59,19 @@ class NegationFilter(Filter):
         return not self.filter.filter(subfolder, conversation_folder, thread, message)
 
 class SenderFilter(Filter):
-    def __init__(self, senders):
-        self.senders = senders
+    def __init__(self, sender, match="whole"):
+        self.sender = sender
+        self.match = match
 
     def filter(self, subfolder, conversation_folder, thread, message):
-        return message["sender"] in self.senders
+        if self.match == "whole":
+            return message["sender_name"] == self.sender
+        elif self.match == "left":
+            return message["sender_name"].startswith(self.sender)
+        elif self.match == "right":
+            return message["sender_name"].endswith(self.sender)
+        else:
+            raise Exception("Unknown match: " + self.match)
+
+def senders_filter(senders, match="whole", action="or"):
+    return CompositeFilter([SenderFilter(sender, match) for sender in senders], action)
