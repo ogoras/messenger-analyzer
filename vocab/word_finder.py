@@ -20,8 +20,7 @@ class WordFinder:
                 print("----------")
 
         sender = decode_fb(message["sender_name"])
-
-        #TODO: implement filtering in a separate package
+        
         if "content" in message:
             content = decode_fb(message["content"])
 
