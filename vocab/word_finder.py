@@ -1,8 +1,8 @@
-from lib.lexical_processing import process_word
+from lib.lexical_processing import process_word, match_words
 from lib.conversions import print_message, decode_fb
 
 class WordFinder:
-    def __init__(self, words_to_match = [], verbosity = 0):
+    def __init__(self, words_to_match = [], verbosity = 0, match = "whole"):
         self.message_cache = None
         self.print_next = 0
         self.words_to_match = words_to_match
@@ -11,6 +11,7 @@ class WordFinder:
         self.count = 0
         self.counts_by_sender = {}
         self.messages_by_sender = {}
+        self.match = match
 
     def search_message(self, message):
         if (self.print_next > 0):
@@ -29,16 +30,16 @@ class WordFinder:
             for word in content.split():
                 word = process_word(word)
 
-                if word in self.words_to_match:
+                if any([match_words(pattern, word, self.match) for pattern in self.words_to_match]):
                     self.count += 1
                     self.counts_by_sender[sender] = self.counts_by_sender.get(sender, 0) + 1
 
                     if not ignore_this_message:
                         self.message_count += 1
                         self.messages_by_sender[sender] = self.messages_by_sender.get(sender, 0) + 1
-                        if self.message_cache != None:
+                        if self.message_cache != None and self.print_next == 0:
                             print_message(self.message_cache)
-                        if self.verbosity > 1:
+                        if self.verbosity > 1 and self.print_next == 0:
                             print_message(message)
                         self.print_next = self.verbosity - 2 if self.verbosity > 1 else 0
                         ignore_this_message = True

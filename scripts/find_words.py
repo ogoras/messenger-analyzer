@@ -13,6 +13,8 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--filter-senders', help='Senders to filter', nargs='+')
     parser.add_argument('-F', '--filter-senders-inverse', help='Inverse filter', action='store_true', default=False)
     parser.add_argument('-y', '--year', help='Year to filter', type=int)
+    parser.add_argument('-m', '--month', help='Month to filter', type=int)
+    parser.add_argument('--match', help='Match type', choices=['whole', 'left', 'right', 'contains'], default='whole')
 
     args = parser.parse_args()
 
@@ -20,14 +22,17 @@ if __name__ == '__main__':
 
     filter = TypeFilter("Generic")
     if args.year:
-        filter = TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
+        if args.month:
+            filter = TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1))
+        else:
+            filter = TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
     if args.filter_senders:
         filter = filter.join(senders_filter(args.filter_senders))
 
         if args.filter_senders_inverse:
             filter = filter.negate()
 
-    word_finder = WordFinder(args.words_to_match.split(), args.verbose)
+    word_finder = WordFinder(args.words_to_match.split(), args.verbose, args.match)
     # move filter_senders to gen_messages
     for message in gen_messages(master_folder, filter):
         word_finder.search_message(message)

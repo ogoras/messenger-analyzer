@@ -18,6 +18,7 @@
 # 7. thread participants
 
 from abc import ABC, abstractmethod
+from lib.lexical_processing import match_words
 
 class Filter(ABC):
     @abstractmethod
@@ -64,16 +65,7 @@ class SenderFilter(Filter):
         self.match = match
 
     def filter(self, subfolder, conversation_folder, thread, message):
-        if self.match == "whole":
-            return message["sender_name"] == self.sender
-        elif self.match == "left":
-            return message["sender_name"].startswith(self.sender)
-        elif self.match == "right":
-            return message["sender_name"].endswith(self.sender)
-        elif self.match == "contains":
-            return self.sender in message["sender_name"]
-        else:
-            raise Exception("Unknown match: " + self.match)
+        return match_words(self.sender, message["sender_name"])
 
 def senders_filter(senders, match="whole"):
     return CompositeFilter([SenderFilter(sender, match) for sender in senders], "or")
