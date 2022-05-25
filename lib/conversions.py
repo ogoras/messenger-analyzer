@@ -1,6 +1,6 @@
 import datetime, os
 
-from loader import save_dir, load_dirs
+from lib.loader import save_dir, load_dirs
 
 def print_fb(string):
     print(decode_fb(string))

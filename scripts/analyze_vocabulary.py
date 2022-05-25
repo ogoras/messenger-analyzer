@@ -1,6 +1,6 @@
 import argparse
 
-from vocabulary_analyzer import print_vocab, VocabularyAnalyzer
+from vocab.vocabulary_analyzer import print_vocab, VocabularyAnalyzer
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Analyze your messages')

@@ -1,5 +1,5 @@
-from lexical_processing import process_word
-from lib import print_message, decode_fb
+from lib.lexical_processing import process_word
+from lib.conversions import print_message, decode_fb
 
 class WordFinder:
     def __init__(self, words_to_match = [], verbosity = 0, filter_senders = [], filter_senders_inverse = False):

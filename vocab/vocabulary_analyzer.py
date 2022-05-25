@@ -1,8 +1,8 @@
-import loader
+import lib.loader as loader
 
-from vocabulary import Vocabulary, relative_vocab, print_vocab
-from lib import decode_fb
-from lexical_processing import process_word
+from vocab.vocabulary import Vocabulary, relative_vocab, print_vocab
+from lib.conversions import decode_fb
+from lib.lexical_processing import process_word
 
 class VocabularyAnalyzer:
     def __init__(self):    

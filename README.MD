@@ -1,22 +1,26 @@
 # Messenger Analyzer
 
-In order to use this tool, you need to [download your messages from Facebook](https://www.zapptales.com/en/download-facebook-messenger-chat-history-how-to/#:~:text=Open%20your%20Facebook%20account%20and,information%E2%80%A6%E2%80%9C%20(4).&text=On%20this%20page%20you%20can,want%20to%20download%20from%20Facebook.) in JSON format. Once it's downloaded, move the "messages" folder inside this repository.
+## Prerequisites
+In order to use this tool, you need to [download your messages from Facebook](https://www.zapptales.com/en/download-facebook-messenger-chat-history-how-to/#:~:text=Open%20your%20Facebook%20account%20and,information%E2%80%A6%E2%80%9C%20(4).&text=On%20this%20page%20you%20can,want%20to%20download%20from%20Facebook.) in JSON format. The first time you run one of the scripts, please specify the path to the downloaded folder. Aftarwards, the script will remember your last used path.
 
+## Scripts
+Currently, there are 3 scripts that you can use:
+- `generate_vocabulary`: Generates a vocabulary file from the messages.
+- `analyze`: Analyze vocabulary saved in vocab.json. This should be run after `generate_vocabulary`.
+- `find_words`: Find specific words in your messages.
+
+## Usage
 To run, use:
-
 ```
-python analyze.py [number of people to print] [number of words to print per person]
+    python -m scripts.script_name [arguments]
 ```
 
-By default, the program prints 10 characteristic words for 10 people that have sent the most messages. The format is:
-    
-    ```
-    [Name] [number of messages sent by the person]
-    Vocabulary size: [number of distinct words the person used]
-    1. [word] [the degree to which [word] is characteristic for the person] used [number of times the word was used by the person] times out of [number of times the word was used in total]
-    2. ...
-    ...
-    10. ...
+For example, to generate the vocabulary file, use:
+```
+    python -m scripts.generate_vocabulary --input "C:/Users/John/Documents/facebook-johndoe4"
+```
 
-    ...
-    ```
+For help, use the -h flag. For instance:
+```
+    python -m scripts.find_words -h
+```

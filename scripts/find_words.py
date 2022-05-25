@@ -1,9 +1,8 @@
 import argparse, os, sys
 
-from vocabulary import VocabularyAnalyzer
-from loader import read_folder
-from lib import parse_folder
-from word_finder import WordFinder
+from lib.loader import read_folder
+from lib.conversions import parse_folder
+from vocab.word_finder import WordFinder
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
