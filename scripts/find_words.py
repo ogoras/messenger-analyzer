@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     word_finder = WordFinder(args.words_to_match.split(), args.verbose, filter_senders, args.filter_senders_inverse)
 
+    #TODO: turn this into a generator :D
     for conversation_folder in os.listdir(master_folder):
         conversation_folder = os.path.join(master_folder, conversation_folder)
         messages = read_folder(conversation_folder)

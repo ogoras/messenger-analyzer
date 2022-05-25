@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
     vocab_analyzer = VocabularyAnalyzer()
 
+    #TODO: turn this into a generator :D
     for conversation_folder in os.listdir(master_folder):
         conversation_folder = os.path.join(master_folder, conversation_folder)
         messages = read_folder(conversation_folder)

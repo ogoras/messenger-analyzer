@@ -5,7 +5,8 @@ from lib.conversions import decode_fb
 from lib.lexical_processing import process_word
 
 class VocabularyAnalyzer:
-    def __init__(self):    
+    def __init__(self):
+        #TODO: add master folder as a parameter    
         self.vocabs_by_sender = {}
         self.average_vocab = Vocabulary()
         self.total_vocab = Vocabulary()
