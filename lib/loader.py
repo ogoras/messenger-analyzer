@@ -1,6 +1,7 @@
 import os
 import json
 from lib.conversions import print_fb
+from lib.filter import Filter
 
 #TYPES:
 # Subscribe - someone joined (for group chats)
@@ -60,16 +61,25 @@ def read_folder(conversation_folder):
     return messages
 
 def gen_messages(master_folder, filter=None, verbose=False):
-    #TODO: Filter class
+    if filter == None:
+        filter = Filter()
 
     for subfolder in ["archived_threads", "filtered_threads", "inbox"]:
+        if (filter.filter_subfolder(subfolder)):
+            continue
         for conversation_folder in os.listdir(os.path.join(master_folder, subfolder)):
+            if (filter.filter_conversation(conversation_folder)):
+                continue
             conversation_folder = os.path.join(master_folder, subfolder, conversation_folder)
             messages = read_folder(conversation_folder)
             if (verbose):
                 print_fb(messages[0]["title"])
             for message_file in messages:
+                if (filter.filter_thread(message_file)):
+                    continue
                 for message in message_file["messages"]:
+                    if (filter.filter_message(message)):
+                        continue
                     yield message
 
 def load_dirs():
