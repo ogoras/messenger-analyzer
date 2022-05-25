@@ -23,7 +23,10 @@ if __name__ == '__main__':
     filter = TypeFilter("Generic")
     if args.year:
         if args.month:
-            filter = TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1))
+            if args.month == 12:
+                filter = TimeFilter(date_to_timestamp(args.year, 12), date_to_timestamp(args.year + 1, 1))
+            else:
+                filter = TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1))
         else:
             filter = TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
     if args.filter_senders:
