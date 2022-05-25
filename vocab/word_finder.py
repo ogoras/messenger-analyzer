@@ -1,6 +1,7 @@
 from lib.lexical_processing import process_word, match_words
 from lib.conversions import print_message, decode_fb
 
+#TODO: change this class into sth more like "MessageFinder", and just use a filter inside search_message :)
 class WordFinder:
     def __init__(self, words_to_match = [], verbosity = 0, match = "whole"):
         self.message_cache = None

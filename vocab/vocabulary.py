@@ -45,7 +45,7 @@ class Vocabulary:
             sum = 0.0
             for word in self.dict:
                 sum += self.dict[word] + bias
-            #TODO : try sum = self.word_count + bias*self.distinct_word_count
+            #TODO: try sum = self.word_count + bias*self.distinct_word_count
 
             self.normalized = {}
             for word in self.dict:
@@ -97,6 +97,6 @@ class Vocabulary:
         
         self.normalize(self.normalization_bias)
         for word in self.normalized:
-            self.relative[word] = self.normalized[word]/ master_vocabulary.normalized[word]
+            self.relative[word] = self.normalized[word] / master_vocabulary.normalized[word]
 
         return self.relative
