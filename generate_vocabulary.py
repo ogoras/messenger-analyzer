@@ -1,8 +1,6 @@
 import argparse, os, sys
 
-from parso import parse
-
-from vocabulary import VocabularyAnalyzer
+from vocabulary_analyzer import VocabularyAnalyzer
 from loader import read_folder
 from lib import print_fb, parse_folder
 
@@ -24,8 +22,7 @@ if __name__ == '__main__':
             print_fb(messages[0]["title"])
         for message_file in messages:
             for message in message_file["messages"]:
-                if(args.vocab):
-                    vocab_analyzer.add_message_to_vocabulary(message)
+                vocab_analyzer.add_message_to_vocabulary(message)
 
     vocab_analyzer.calculate_average_vocab()
     vocab_analyzer.save_vocab()

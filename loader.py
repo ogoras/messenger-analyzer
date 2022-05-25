@@ -53,12 +53,16 @@ def save_dir(dir_path):
     with open("saved_dirs.json", "w") as f:
         json.dump(dir_list, f)
 
-def save_vocab(vocab):
-    with open("vocab.json", "w") as f:
-        json.dump(vocab, f)
+class MyEncoder(json.JSONEncoder):
+    def default(self, o):
+        return o.__dict__ 
 
-def load_vocab():
-    if not os.path.exists("vocab.json"):
+def save(object, filename):
+    with open(filename, "w") as f:
+        json.dump(object, f, cls=MyEncoder)
+
+def load(filename):
+    if not os.path.exists(filename):
         return {}
-    with open("vocab.json", "r", encoding='utf-8') as f:
+    with open(filename, "r", encoding='utf-8') as f:
         return json.load(f)
