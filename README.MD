@@ -1,12 +1,12 @@
 # Messenger Analyzer
 
 ## Prerequisites
-In order to use this tool, you need to [download your messages from Facebook](https://www.zapptales.com/en/download-facebook-messenger-chat-history-how-to/#:~:text=Open%20your%20Facebook%20account%20and,information%E2%80%A6%E2%80%9C%20(4).&text=On%20this%20page%20you%20can,want%20to%20download%20from%20Facebook.) in JSON format. The first time you run one of the scripts, please specify the path to the downloaded folder. Aftarwards, the script will remember your last used path.
+In order to use this tool, you need to [download your messages from Facebook](https://www.zapptales.com/en/download-facebook-messenger-chat-history-how-to/#:~:text=Open%20your%20Facebook%20account%20and,information%E2%80%A6%E2%80%9C%20(4).&text=On%20this%20page%20you%20can,want%20to%20download%20from%20Facebook.) in JSON format. The first time you run one of the scripts, please specify the path to the downloaded folder. Afterwards, the script will remember your last used path.
 
 ## Scripts
 Currently, there are 3 scripts that you can use:
 - `generate_vocabulary`: Generates a vocabulary file from the messages.
-- `analyze`: Analyze vocabulary saved in vocab.json. This should be run after `generate_vocabulary`.
+- `analyze_vocabulary`: Analyze vocabulary saved in vocab.json. This should be run after `generate_vocabulary`.
 - `find_words`: Find specific words in your messages.
 
 ## Usage
