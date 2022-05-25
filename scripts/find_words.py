@@ -2,7 +2,7 @@ import argparse, sys
 
 from lib.loader import gen_messages, parse_folder
 from vocab.word_finder import WordFinder
-from lib.filter import EmptyFilter, senders_filter
+from lib.filter import TypeFilter, senders_filter
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
@@ -16,9 +16,9 @@ if __name__ == '__main__':
 
     master_folder = parse_folder(args.input, sys.argv[0])
 
-    filter = EmptyFilter()
+    filter = TypeFilter("Generic")
     if args.filter_senders:
-        filter = senders_filter(args.filter_senders)
+        filter = filter.join(senders_filter(args.filter_senders))
 
         if args.filter_senders_inverse:
             filter = filter.negate()

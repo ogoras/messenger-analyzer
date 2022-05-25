@@ -28,7 +28,7 @@ class Filter(ABC):
         return NegationFilter(self)
     
     def join(self, other, action="and"):
-        return CompositeFilter(self, other, action)
+        return CompositeFilter([self, other], action)
 
 class EmptyFilter(Filter):
     def filter(self, subfolder, conversation_folder, thread, message):
