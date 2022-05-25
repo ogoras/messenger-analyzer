@@ -53,10 +53,10 @@ class CompositeFilter(Filter):
 
 class NegationFilter(Filter):
     def __init__(self, filter):
-        self.filter = filter
+        self.inner_filter = filter
 
     def filter(self, subfolder, conversation_folder, thread, message):
-        return not self.filter.filter(subfolder, conversation_folder, thread, message)
+        return not self.inner_filter.filter(subfolder, conversation_folder, thread, message)
 
 class SenderFilter(Filter):
     def __init__(self, sender, match="whole"):
@@ -75,8 +75,8 @@ class SenderFilter(Filter):
         else:
             raise Exception("Unknown match: " + self.match)
 
-def senders_filter(senders, match="whole", action="or"):
-    return CompositeFilter([SenderFilter(sender, match) for sender in senders], action)
+def senders_filter(senders, match="whole"):
+    return CompositeFilter([SenderFilter(sender, match) for sender in senders], "or")
 
 class TypeFilter(Filter):
     def __init__(self, type):

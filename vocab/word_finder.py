@@ -2,7 +2,7 @@ from lib.lexical_processing import process_word
 from lib.conversions import print_message, decode_fb
 
 class WordFinder:
-    def __init__(self, words_to_match = [], verbosity = 0, filter_senders = [], filter_senders_inverse = False):
+    def __init__(self, words_to_match = [], verbosity = 0):
         self.message_cache = None
         self.print_next = 0
         self.words_to_match = words_to_match
@@ -11,8 +11,6 @@ class WordFinder:
         self.count = 0
         self.counts_by_sender = {}
         self.messages_by_sender = {}
-        self.filter_senders = filter_senders
-        self.filter_senders_inverse = filter_senders_inverse
 
     def search_message(self, message):
         if (self.print_next > 0):
@@ -24,7 +22,7 @@ class WordFinder:
         sender = decode_fb(message["sender_name"])
 
         #TODO: implement filtering in a separate package
-        if "content" in message and message["type"] == "Generic" and ((sender not in self.filter_senders) ^ (self.filter_senders_inverse)):
+        if "content" in message:
             content = decode_fb(message["content"])
 
             ignore_this_message = False
