@@ -1,6 +1,6 @@
 import lib.loader as loader
 
-from vocab.vocabulary import Vocabulary, relative_vocab, print_vocab
+from vocab.vocabulary import Vocabulary
 from lib.conversions import decode_fb
 from lib.lexical_processing import process_word
 
@@ -43,16 +43,17 @@ class VocabularyAnalyzer:
             for word in self.vocabs_by_sender[sender].dict:
                 self.average_vocab.increment(word, self.vocabs_by_sender[sender].dict[word]/self.vocabs_by_sender[sender].word_count*magnitude_order)
         
-        self.average_vocab.normalize(0.001)
+        self.average_vocab.normalize(0.01)
 
     def get_vocab(self, sender = None):
         if sender == None:
-            return self.total_vocab.dict
+            return self.total_vocab
         else:
-            return self.vocabs_by_sender[sender].dict
+            return self.vocabs_by_sender[sender]
 
-    def characteristic_vocab(self, sender):
-        return relative_vocab(self.vocabs_by_sender[sender].normalize(), self.average_vocab.normalized)
+    def print_characteristic_vocab(self, sender, n_words=10):
+        self.vocabs_by_sender[sender].relate(self.average_vocab)
+        self.vocabs_by_sender[sender].print(n_words, True, self.get_vocab().dict)
 
     def save_vocab(self):
         if (self.sorted == False):
@@ -82,4 +83,4 @@ class VocabularyAnalyzer:
 
         for sender in messages_count_sorted[:n_senders]:
             print(sender, self.vocabs_by_sender[sender].message_count)
-            print_vocab(self.characteristic_vocab(sender), n_words, self.get_vocab(sender), self.get_vocab())
+            self.print_characteristic_vocab(sender, n_words)

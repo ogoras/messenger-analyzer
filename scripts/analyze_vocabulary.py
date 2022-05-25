@@ -1,6 +1,6 @@
 import argparse
 
-from vocab.vocabulary_analyzer import print_vocab, VocabularyAnalyzer
+from vocab.vocabulary_analyzer import VocabularyAnalyzer
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Analyze your messages')
@@ -25,14 +25,14 @@ if __name__ == "__main__":
 
     if (args.person != None):
         for sender in args.person:
-            print(sender, vocab_analyzer.vocabs_by_sender[sender].message_count)
-            print_vocab(vocab_analyzer.get_vocab(sender), n_words)
+            print(sender, vocab_analyzer.vocabs_by_sender[sender].message_count, "messages")
+            vocab_analyzer.get_vocab(sender).print(n_words)
             print("Characteristic words:")
-            print_vocab(vocab_analyzer.characteristic_vocab(sender), n_words, vocab_analyzer.get_vocab(sender), vocab_analyzer.get_vocab())
+            vocab_analyzer.print_characteristic_vocab(sender, n_words)
 
     vocab_analyzer.print_top(n_senders, n_words)
 
     if args.average_vocab:
         print("")
         print("Total vocabulary:")
-        print_vocab(vocab_analyzer.get_vocab(), n_words)
+        vocab_analyzer.get_vocab().print(n_words)

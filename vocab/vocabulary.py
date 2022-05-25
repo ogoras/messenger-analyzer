@@ -1,42 +1,16 @@
-#TODO: move all functions into the class
-def print_vocab(vocabulary, n=100, overall_vocabulary=None, master_vocabulary=None):
-    print("Vocabulary size: " + str(len(vocabulary)))
-    i = 0
-    for word in sorted(vocabulary, key=vocabulary.get, reverse=True)[:n]:
-        i += 1
-        print_string = str(i) + ". " + word + " " + str(vocabulary[word])
-        if overall_vocabulary != None:
-            print_string += " used " + str(overall_vocabulary[word]) + " times"
-            if master_vocabulary != None: 
-                print_string += " out of " + str(master_vocabulary[word])
-        print(print_string)
-    print("")
-
-def relative_vocab(vocabulary, master_vocabulary):
-    relative_vocabulary = {}
-    for word in vocabulary:
-        relative_vocabulary[word] = vocabulary[word]/ master_vocabulary[word]
-    return relative_vocabulary
-
-def normalize_vocab(vocabulary, bias=0):
-    sum = 0.0
-    for word in vocabulary:
-        sum += vocabulary[word] + bias
-
-    normalized = {}
-    for word in vocabulary:
-        normalized[word] = (vocabulary[word] + bias) * 100/sum
-    return normalized
-
 class Vocabulary:
     def __init__(self, from_json=None):
         self.dict = {}
         self.normalized = None  #dict
         self.sorted = None      #list
+        self.relative = {}
+        self.relative_sorted = None
 
         self.message_count = 0
         self.word_count = 0
         self.distinct_word_count = 0
+        self.normalization_bias = 0
+        self.print_first = True
 
         if from_json != None:
             self.dict = from_json["dict"]
@@ -45,27 +19,83 @@ class Vocabulary:
             self.distinct_word_count = from_json["distinct_word_count"]
             self.normalized = from_json["normalized"]
             self.sorted = from_json["sorted"]
+            self.relative = from_json["relative"]
+            self.relative_sorted = from_json["relative_sorted"]
+            self.normalization_bias = from_json["normalization_bias"]
     
     def increment(self, word, increment=1):
+        #TODO: unit tests!
         self.sorted = None
         self.normalized = None
 
-        self.dict[word] = self.dict.get(word, 0) + increment
-        self.word_count += increment
-
         if word not in self.dict:
             self.distinct_word_count += 1
+
+        self.dict[word] = self.dict.get(word, 0) + increment
+        self.word_count += increment
+        
     
     def increment_message(self):
         self.message_count += 1
 
     def normalize(self, bias=0):
-        if self.normalized == None:
-            self.normalized = normalize_vocab(self.dict, bias)
+        if self.normalized == None or bias != self.normalization_bias:
+            self.normalization_bias = bias
+
+            sum = 0.0
+            for word in self.dict:
+                sum += self.dict[word] + bias
+            #TODO : try sum = self.word_count + bias*self.distinct_word_count
+
+            self.normalized = {}
+            for word in self.dict:
+                self.normalized[word] = (self.dict[word] + bias) * 100/sum
+
         return self.normalized
 
     def sort(self):
         if self.sorted == None:
             self.sorted = sorted(self.dict, key=self.dict.get, reverse=True)
+        if self.relative_sorted == None:
+            self.relative_sorted = sorted(self.relative, key=self.relative.get, reverse=True)
         return self.sorted
 
+    def print(self, n=100, relative=False, master_vocabulary=None, percentage=True):
+        self.sort()
+        self.normalize(self.normalization_bias)
+
+        if relative:
+            sorted = self.relative_sorted
+        else:
+            sorted = self.sorted
+
+        print("Vocabulary size: " + str(self.distinct_word_count) + " distinct words, " + str(self.word_count) + " words total")
+        i = 0
+        for word in sorted[:n]:
+            i += 1
+            print_string = str(i) + ". " + word + " "
+
+            if relative:
+                print_string += str(self.relative[word]) + " "
+
+            print_string += "| used " + str(self.dict[word]) + " times"
+
+            if master_vocabulary != None: 
+                print_string += " out of " + str(master_vocabulary[word]) + " found overall"
+            
+            if percentage:
+                #print 2 significant digits, not 2 digits after the comma
+                print_string += " (" + str(round(self.normalized[word]*10, 2)) + "‰ of vocab) "
+            
+            print(print_string)
+        print("")
+
+    def relate(self, master_vocabulary):
+        self.relative_sorted = None
+        self.relative = {}
+        
+        self.normalize(self.normalization_bias)
+        for word in self.normalized:
+            self.relative[word] = self.normalized[word]/ master_vocabulary.normalized[word]
+
+        return self.relative
