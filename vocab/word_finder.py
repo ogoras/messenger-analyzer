@@ -23,6 +23,7 @@ class WordFinder:
 
         sender = decode_fb(message["sender_name"])
 
+        # TODO: implement filtering in a separate package
         if "content" in message and message["type"] == "Generic" and ((sender not in self.filter_senders) ^ (self.filter_senders_inverse)):
             content = decode_fb(message["content"])
 

@@ -1,4 +1,4 @@
-
+#TODO: move all functions into the class
 def print_vocab(vocabulary, n=100, overall_vocabulary=None, master_vocabulary=None):
     print("Vocabulary size: " + str(len(vocabulary)))
     i = 0

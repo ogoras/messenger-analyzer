@@ -15,6 +15,7 @@ class VocabularyAnalyzer:
     def add_message_to_vocabulary(self, message):
         self.sorted = False
 
+        # TODO: implement filtering in a separate package
         if "content" in message and message["type"] == "Generic":
             sender = decode_fb(message["sender_name"])
 
