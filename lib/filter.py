@@ -84,3 +84,12 @@ class TypeFilter(Filter):
 
     def filter(self, subfolder, conversation_folder, thread, message):
         return message["type"] == self.type
+
+class TimeFilter(Filter):
+    def __init__(self, time_start, time_end):
+        self.time_start = time_start
+        self.time_end = time_end
+    
+    def filter(self, subfolder, conversation_folder, thread, message):
+        return self.time_start <= message["timestamp_ms"] <= self.time_end
+        

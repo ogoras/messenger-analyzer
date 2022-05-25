@@ -1,8 +1,9 @@
 import argparse, sys
+from lib.conversions import date_to_timestamp
 
 from lib.loader import gen_messages, parse_folder
 from vocab.word_finder import WordFinder
-from lib.filter import TypeFilter, senders_filter
+from lib.filter import TypeFilter, senders_filter, TimeFilter
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
@@ -11,12 +12,15 @@ if __name__ == '__main__':
     parser.add_argument('-w', '--words-to-match', help='Words to match', required=True)
     parser.add_argument('-f', '--filter-senders', help='Senders to filter', nargs='+')
     parser.add_argument('-F', '--filter-senders-inverse', help='Inverse filter', action='store_true', default=False)
+    parser.add_argument('-y', '--year', help='Year to filter', type=int)
 
     args = parser.parse_args()
 
     master_folder = parse_folder(args.input, sys.argv[0])
 
     filter = TypeFilter("Generic")
+    if args.year:
+        filter = TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
     if args.filter_senders:
         filter = filter.join(senders_filter(args.filter_senders))
 

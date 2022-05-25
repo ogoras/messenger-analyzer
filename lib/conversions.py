@@ -7,6 +7,9 @@ def timestamp_to_date_string(timestamp):
     #hour and date
     return datetime.datetime.fromtimestamp(timestamp/1000).strftime('%Y-%m-%d %H:%M:%S')
 
+def date_to_timestamp(year, month=1, day=1, hour=0, minute=0, second=0):
+    return datetime.datetime(year, month, day, hour, minute, second).timestamp() * 1000
+
 def decode_fb(string):
     return string.encode('latin1').decode('utf8')
 
