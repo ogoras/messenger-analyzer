@@ -48,7 +48,7 @@ def parse_folder(input, script_name):
 
 
 def read_folder(conversation_folder):
-    messages = []
+    threads = []
     for filename in os.listdir(conversation_folder):
         filename = os.path.join(conversation_folder, filename)
 
@@ -56,31 +56,23 @@ def read_folder(conversation_folder):
         if os.path.isfile(filename) and filename.endswith(".json"):
             #load JSON
             with open(filename, "r") as f:
-                messages.append(json.load(f))
+                threads.append(json.load(f))
 
-    return messages
+    return threads
 
 def gen_messages(master_folder, filter=None, verbose=False):
     if filter == None:
         filter = Filter()
 
     for subfolder in ["archived_threads", "filtered_threads", "inbox"]:
-        if (filter.filter_subfolder(subfolder)):
-            continue
         for conversation_folder in os.listdir(os.path.join(master_folder, subfolder)):
-            if (filter.filter_conversation(conversation_folder)):
-                continue
-            conversation_folder = os.path.join(master_folder, subfolder, conversation_folder)
-            messages = read_folder(conversation_folder)
+            threads = read_folder(os.path.join(master_folder, subfolder, conversation_folder))
             if (verbose):
-                print_fb(messages[0]["title"])
-            for message_file in messages:
-                if (filter.filter_thread(message_file)):
-                    continue
-                for message in message_file["messages"]:
-                    if (filter.filter_message(message)):
-                        continue
-                    yield message
+                print_fb(threads[0]["title"])
+            for thread in threads:
+                for message in thread["messages"]:
+                    if (filter.filter(subfolder, conversation_folder, thread, message)):
+                        yield message
 
 def load_dirs():
     if not os.path.exists("saved_dirs.json"):

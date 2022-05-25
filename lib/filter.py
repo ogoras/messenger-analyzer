@@ -22,14 +22,5 @@ class Filter:
         pass
     
     #TODO: unmock
-    def filter_subfolder(self, subfolder):
-        return False
-    
-    def filter_conversation(self, conversation_folder):
-        return False
-    
-    def filter_message(self, message):
-        return False
-    
-    def filter_thread(self, thread):
-        return False
+    def filter(self, subfolder, conversation_folder, thread, message):
+        return True
