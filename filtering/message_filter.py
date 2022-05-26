@@ -1,6 +1,7 @@
 from filtering.filter import Filter, CompositeFilter
 from abc import abstractmethod
 from lib.lexical_processing import match_words
+from lib.conversions import decode_fb
 
 class MessageFilter(Filter):
     def filter(self, subfolder, conversation_folder, thread, message):
@@ -16,7 +17,7 @@ class SenderFilter(MessageFilter):
         self.match = match
 
     def filter_message(self, message):
-        return match_words(self.sender, message["sender_name"])
+        return match_words(self.sender, decode_fb(message["sender_name"]))
 
 def senders_filter(senders, match="whole"):
     return CompositeFilter([SenderFilter(sender, match) for sender in senders], "or")
