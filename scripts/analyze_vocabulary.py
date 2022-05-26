@@ -47,7 +47,7 @@ if __name__ == "__main__":
     if args.year:
         master_folder = parse_folder(args.input, sys.argv[0])
         filter = TypeFilter("Generic")
-        filter = filter.join(TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1)))
+        filter &= TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
         year_vocab = Vocabulary()
 
         for message in gen_messages(master_folder, filter):

@@ -24,16 +24,18 @@ if __name__ == '__main__':
     if args.year:
         if args.month:
             if args.month == 12:
-                filter = filter.join(TimeFilter(date_to_timestamp(args.year, 12), date_to_timestamp(args.year + 1, 1)))
+                filter &= TimeFilter(date_to_timestamp(args.year, 12), date_to_timestamp(args.year + 1, 1))
             else:
-                filter = filter.join(TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1)))
+                filter &= TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1))
         else:
-            filter = filter.join(TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1)))
+            filter &= TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
     if args.filter_senders:
-        filter = filter.join(senders_filter(args.filter_senders))
+        filter_to_add = senders_filter(args.filter_senders)
 
         if args.filter_senders_inverse:
-            filter = filter.negate()
+            filter_to_add = ~filter_to_add
+
+        filter &= filter_to_add
 
     word_finder = WordFinder(args.words_to_match.split(), args.verbose, args.match)
     # move filter_senders to gen_messages

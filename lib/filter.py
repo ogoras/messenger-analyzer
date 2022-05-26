@@ -25,11 +25,23 @@ class Filter(ABC):
     def filter(self, subfolder, conversation_folder, thread, message):
         pass
 
-    def negate(self):
+    def __invert__(self):
         return NegationFilter(self)
     
-    def join(self, other, action="and"):
-        return CompositeFilter([self, other], action)
+    def __and__(self, other):
+        if not isinstance(other, Filter):
+            raise TypeError("Can only combine filters")
+        return CompositeFilter([self, other], "and")
+
+    def __or__(self, other):
+        if not isinstance(other, Filter):
+            raise TypeError("Can only combine filters")
+        return CompositeFilter([self, other], "or")
+    
+    def __xor__(self, other):
+        if not isinstance(other, Filter):
+            raise TypeError("Can only combine filters")
+        return CompositeFilter([self, other], "xor")
 
 class EmptyFilter(Filter):
     def filter(self, subfolder, conversation_folder, thread, message):
