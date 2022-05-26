@@ -11,6 +11,7 @@ class MessageFilter(Filter):
     def filter_message(self, message):
         pass
 
+#TODO: do the same to SenderFilter that you did to TypeFilter
 class SenderFilter(MessageFilter):
     def __init__(self, sender, match="whole"):
         self.sender = sender

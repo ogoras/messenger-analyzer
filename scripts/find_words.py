@@ -1,4 +1,5 @@
 import argparse, sys
+from categorizing.time_categorizer import MonthCategorizer, YearCategorizer
 from lib.conversions import date_to_timestamp
 
 from lib.loader import gen_messages, parse_folder
@@ -24,13 +25,9 @@ if __name__ == '__main__':
 
     filter = EqualsFilter(TypeCategorizer(), "Generic")
     if args.year:
-        if args.month:
-            if args.month == 12:
-                filter &= TimeFilter(date_to_timestamp(args.year, 12), date_to_timestamp(args.year + 1, 1))
-            else:
-                filter &= TimeFilter(date_to_timestamp(args.year, args.month), date_to_timestamp(args.year, args.month + 1))
-        else:
-            filter &= TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
+        filter &= EqualsFilter(YearCategorizer(), args.year)
+    if args.month:
+        filter &= EqualsFilter(MonthCategorizer(), args.month)
     if args.filter_senders:
         filter_to_add = senders_filter(args.filter_senders)
 
