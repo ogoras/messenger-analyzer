@@ -1,7 +1,7 @@
+from categorizing.message_categorizer import SenderCategorizer
 from filtering.filter import Filter, CompositeFilter
 from abc import abstractmethod
-from lib.lexical_processing import match_words
-from lib.conversions import decode_fb
+from filtering.category_filter import MatchFilter
 
 class MessageFilter(Filter):
     def filter(self, subfolder, conversation_folder, thread, message):
@@ -11,17 +11,10 @@ class MessageFilter(Filter):
     def filter_message(self, message):
         pass
 
-#TODO: do the same to SenderFilter that you did to TypeFilter
-class SenderFilter(MessageFilter):
-    def __init__(self, sender, match="whole"):
-        self.sender = sender
-        self.match = match
-
-    def filter_message(self, message):
-        return match_words(self.sender, decode_fb(message["sender_name"]))
+# SenderFilter(sender, match) becomes MatchFilter(SenderCategorizer(), sender, match)
 
 def senders_filter(senders, match="whole"):
-    return CompositeFilter([SenderFilter(sender, match) for sender in senders], "or")
+    return CompositeFilter([MatchFilter(SenderCategorizer(), sender, match) for sender in senders], "or")
 
 # TypeFilter(type) becomes EqualsFilter(TypeCategorizer(), type)
 

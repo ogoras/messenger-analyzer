@@ -1,10 +1,9 @@
 import argparse, sys
-from categorizing.time_categorizer import MonthCategorizer, YearCategorizer
-from lib.conversions import date_to_timestamp
 
+from categorizing.time_categorizer import MonthCategorizer, YearCategorizer
 from lib.loader import gen_messages, parse_folder
 from vocab.word_finder import WordFinder
-from filtering.message_filter import senders_filter, TimeFilter
+from filtering.message_filter import senders_filter
 from filtering.category_filter import EqualsFilter
 from categorizing.message_categorizer import TypeCategorizer
 
