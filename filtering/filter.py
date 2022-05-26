@@ -18,6 +18,7 @@
 # 7. thread participants
 
 from abc import ABC, abstractmethod
+from categorizing.categorizer import Categorizer
 
 class Filter(ABC):
     @abstractmethod
@@ -69,4 +70,3 @@ class NegationFilter(Filter):
 
     def filter(self, subfolder, conversation_folder, thread, message):
         return not self.inner_filter.filter(subfolder, conversation_folder, thread, message)
-        

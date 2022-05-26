@@ -17,11 +17,3 @@ class SenderCategorizer(MessageCategorizer):
 class TypeCategorizer(MessageCategorizer):
     def categorize_message(self, message):
         return message["type"]
-
-class TimeCategorizer(MessageCategorizer):
-    def categorize_message(self, message):
-        return self.categorize_time(message["timestamp_ms"])
-
-    @abstractmethod
-    def categorize_time(self, time):
-        pass
