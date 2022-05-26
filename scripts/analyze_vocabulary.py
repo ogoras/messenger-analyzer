@@ -3,7 +3,7 @@ from lib.lexical_processing import process_word
 
 from vocab.vocabulary_analyzer import VocabularyAnalyzer
 from vocab.vocabulary import Vocabulary
-from lib.filter import TimeFilter, TypeFilter
+from filtering.message_filter import TimeFilter, TypeFilter
 from lib.loader import gen_messages, parse_folder
 from lib.conversions import date_to_timestamp, decode_fb
 

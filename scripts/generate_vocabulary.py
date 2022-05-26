@@ -2,7 +2,7 @@ import argparse, os, sys
 
 from vocab.vocabulary_analyzer import VocabularyAnalyzer
 from lib.loader import gen_messages, parse_folder
-from lib.filter import TypeFilter
+from filtering.message_filter import TypeFilter
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')

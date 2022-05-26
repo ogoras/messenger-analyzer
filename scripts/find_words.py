@@ -3,7 +3,7 @@ from lib.conversions import date_to_timestamp
 
 from lib.loader import gen_messages, parse_folder
 from vocab.word_finder import WordFinder
-from lib.filter import TypeFilter, senders_filter, TimeFilter
+from filtering.message_filter import TypeFilter, senders_filter, TimeFilter
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')

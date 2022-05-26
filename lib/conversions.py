@@ -1,4 +1,4 @@
-import datetime, os
+import datetime
 
 def print_fb(string):
     print(decode_fb(string))
