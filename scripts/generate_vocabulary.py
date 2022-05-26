@@ -1,4 +1,5 @@
 import argparse, os, sys
+from categorizing.time_categorizer import DayCategorizer, HourCategorizer, MinuteCategorizer, MonthCategorizer, YearCategorizer
 
 from vocab.vocabulary_analyzer import VocabularyAnalyzer
 from lib.loader import gen_messages, parse_folder
@@ -14,6 +15,7 @@ if __name__ == '__main__':
 
     master_folder = parse_folder(args.input, sys.argv[0])
 
+    # put in a categorizer of your choice and have fun!
     vocab_analyzer = VocabularyAnalyzer()
 
     filter = EqualsFilter(TypeCategorizer(), "Generic")

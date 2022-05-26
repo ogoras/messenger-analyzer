@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     if (args.person != None):
         for sender in args.person:
-            print(sender, vocab_analyzer.vocabs_by_sender[sender].message_count, "messages")
+            print(sender, vocab_analyzer.vocabs_by_category[sender].message_count, "messages")
             vocab_analyzer.get_vocab(sender).print(n_words)
             print("Characteristic words:")
             vocab_analyzer.print_characteristic_vocab(sender, n_words)
