@@ -26,7 +26,7 @@ from filtering.filter import EmptyFilter
 
 def parse_folder(input, script_name):
     if (input != None):
-        master_folder == input
+        master_folder = input
         save_dir(master_folder)
     else:
         try:
