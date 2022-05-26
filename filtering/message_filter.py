@@ -33,5 +33,5 @@ class TimeFilter(MessageFilter):
         self.time_start = time_start
         self.time_end = time_end
     
-    def filter_messag(self, message):
+    def filter_message(self, message):
         return self.time_start <= message["timestamp_ms"] <= self.time_end
