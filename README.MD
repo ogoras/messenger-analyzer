@@ -10,17 +10,30 @@ Currently, there are 3 scripts that you can use:
 - `find_words`: Find specific words in your messages.
 
 ## Usage
+First you have to change directory to src:
+```
+cd src
+```
+
+Then you can run the scripts.
+
 To run, use:
 ```
-    python -m scripts.script_name [arguments]
+python -m script_name [arguments]
 ```
 
 For example, to generate the vocabulary file, use:
 ```
-    python -m scripts.generate_vocabulary --input "C:/Users/John/Documents/facebook-johndoe4"
+python -m generate_vocabulary --input "C:/Users/John/Documents/facebook-johndoe4"
 ```
 
 For help, use the -h flag. For instance:
 ```
-    python -m scripts.find_words -h
+python -m find_words -h
+```
+
+## Unit testing
+Before running this command, make sure you're in the root directory. To run unit tests, use:
+```
+python -m unittest
 ```
