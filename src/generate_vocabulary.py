@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     filter = EqualsFilter(TypeCategorizer(), "Generic")
 
-    for message in gen_messages(master_folder, filter, verbose = args.verbose > 1):
+    for (subfolder, conversation_folder, thread, message) in gen_messages(master_folder, filter, verbose = args.verbose > 1):
         vocab_analyzer.add_message_to_vocabulary(message)
 
     vocab_analyzer.calculate_average_vocab()

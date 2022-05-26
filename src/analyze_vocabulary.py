@@ -52,7 +52,7 @@ if __name__ == "__main__":
         filter &= TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
         year_vocab = Vocabulary()
 
-        for message in gen_messages(master_folder, filter):
+        for (subfolder, conversation_folder, thread, message) in gen_messages(master_folder, filter):
             if "content" in message:
                 year_vocab.increment_message()
                 content = decode_fb(message["content"])

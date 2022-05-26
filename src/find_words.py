@@ -1,8 +1,11 @@
 import argparse, sys
+from categorizing.content_categorizer import WordCountCategorizer
 
 from categorizing.time_categorizer import MonthCategorizer, YearCategorizer
+from filtering.content_filter import WordMatchFilter, words_filter
+from filtering.filter import EmptyFilter
 from lib.loader import gen_messages, parse_folder
-from vocab.word_finder import WordFinder
+from vocab.message_finder import MessageFinder
 from filtering.message_filter import senders_filter
 from filtering.category_filter import EqualsFilter
 from categorizing.message_categorizer import TypeCategorizer
@@ -35,9 +38,11 @@ if __name__ == '__main__':
 
         filter &= filter_to_add
 
-    word_finder = WordFinder(args.words_to_match.split(), args.verbose, args.match)
+    word_finder = MessageFinder(WordCountCategorizer(args.words_to_match.split(), args.match), args.verbose)
+    # lightweight version
+    #word_finder = WordFinder(words_filter(args.words_to_match.split(), args.match), args.verbose)
     # move filter_senders to gen_messages
-    for message in gen_messages(master_folder, filter):
-        word_finder.search_message(message)
+    for (subfolder, conversation_folder, thread, message) in gen_messages(master_folder, filter):
+        word_finder.search_message(subfolder, conversation_folder, thread, message)
 
     word_finder.print_results()

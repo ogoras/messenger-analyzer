@@ -70,7 +70,7 @@ def gen_messages(master_folder, filter=EmptyFilter(), verbose=False):
             for thread in threads:
                 for message in thread["messages"]:
                     if (filter.filter(subfolder, conversation_folder, thread, message)):
-                        yield message
+                        yield (subfolder, conversation_folder, thread, message)
 
 def load_dirs():
     if not os.path.exists("saved_dirs.json"):
