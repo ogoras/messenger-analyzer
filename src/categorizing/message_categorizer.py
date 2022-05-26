@@ -3,7 +3,7 @@ from abc import abstractmethod
 from lib.conversions import decode_fb
 
 class MessageCategorizer(Categorizer):
-    def categorize(self, subfolder, conversation_folder, thread, message):
+    def categorize(self, subfolder, conversation_folder, thread, message=""):
         return self.categorize_message(message)
 
     @abstractmethod
