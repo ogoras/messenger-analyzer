@@ -22,12 +22,7 @@ class SenderFilter(MessageFilter):
 def senders_filter(senders, match="whole"):
     return CompositeFilter([SenderFilter(sender, match) for sender in senders], "or")
 
-class TypeFilter(MessageFilter):
-    def __init__(self, type):
-        self.type = type
-
-    def filter_message(self, message):
-        return message["type"] == self.type
+# TypeFilter(type) becomes EqualsFilter(TypeCategorizer(), type)
 
 class TimeFilter(MessageFilter):
     def __init__(self, time_start, time_end):

@@ -2,7 +2,8 @@ import argparse, os, sys
 
 from vocab.vocabulary_analyzer import VocabularyAnalyzer
 from lib.loader import gen_messages, parse_folder
-from filtering.message_filter import TypeFilter
+from categorizing.message_categorizer import TypeCategorizer
+from filtering.category_filter import EqualsFilter
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
@@ -15,7 +16,7 @@ if __name__ == '__main__':
 
     vocab_analyzer = VocabularyAnalyzer()
 
-    filter = TypeFilter("Generic")
+    filter = EqualsFilter(TypeCategorizer(), "Generic")
 
     for message in gen_messages(master_folder, filter, verbose = args.verbose > 1):
         vocab_analyzer.add_message_to_vocabulary(message)

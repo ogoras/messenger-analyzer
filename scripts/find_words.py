@@ -3,7 +3,9 @@ from lib.conversions import date_to_timestamp
 
 from lib.loader import gen_messages, parse_folder
 from vocab.word_finder import WordFinder
-from filtering.message_filter import TypeFilter, senders_filter, TimeFilter
+from filtering.message_filter import senders_filter, TimeFilter
+from filtering.category_filter import EqualsFilter
+from categorizing.message_categorizer import TypeCategorizer
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
@@ -20,7 +22,7 @@ if __name__ == '__main__':
 
     master_folder = parse_folder(args.input, sys.argv[0])
 
-    filter = TypeFilter("Generic")
+    filter = EqualsFilter(TypeCategorizer(), "Generic")
     if args.year:
         if args.month:
             if args.month == 12:
