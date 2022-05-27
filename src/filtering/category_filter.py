@@ -6,8 +6,8 @@ class CategoryFilter(Filter):
     def __init__(self, categorizer):
         self.categorizer = categorizer
 
-    def filter(self, subfolder, conversation_folder, thread, message):
-        return self.filter_category(self.categorizer.categorize(subfolder, conversation_folder, thread, message))
+    def filter(self, *args):
+        return self.filter_category(self.categorizer.categorize(*args))
 
     @abstractmethod
     def filter_category(self, category):

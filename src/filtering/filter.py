@@ -22,7 +22,7 @@ from categorizing.categorizer import Categorizer
 
 class Filter(ABC):
     @abstractmethod
-    def filter(self, subfolder, conversation_folder, thread, message):
+    def filter(self, *args):
         pass
 
     def __invert__(self):
@@ -44,7 +44,7 @@ class Filter(ABC):
         return CompositeFilter([self, other], "xor")
 
 class EmptyFilter(Filter):
-    def filter(self, subfolder, conversation_folder, thread, message):
+    def filter(self, *args):
         return True
 
 class CompositeFilter(Filter):
@@ -54,13 +54,13 @@ class CompositeFilter(Filter):
         if action == "xor" and len(filters != 2):
             raise Exception("XOR filter needs exactly 2 filters")
 
-    def filter(self, subfolder, conversation_folder, thread, message):
+    def filter(self, *args):
         if self.action == "and":
-            return all([f.filter(subfolder, conversation_folder, thread, message) for f in self.filters])
+            return all([f.filter(*args) for f in self.filters])
         elif self.action == "or":
-            return any([f.filter(subfolder, conversation_folder, thread, message) for f in self.filters])
+            return any([f.filter(*args) for f in self.filters])
         elif self.action == "xor":
-            return (self.filters[0].filter(subfolder, conversation_folder, thread, message) ^ self.filters[1].filter(subfolder, conversation_folder, thread, message))
+            return (self.filters[0].filter(*args) ^ self.filters[1].filter(*args))
         else:
             raise Exception("Unknown action: " + self.action)
 
@@ -68,5 +68,5 @@ class NegationFilter(Filter):
     def __init__(self, filter):
         self.inner_filter = filter
 
-    def filter(self, subfolder, conversation_folder, thread, message):
-        return not self.inner_filter.filter(subfolder, conversation_folder, thread, message)
+    def filter(self, *args):
+        return not self.inner_filter.filter(*args)

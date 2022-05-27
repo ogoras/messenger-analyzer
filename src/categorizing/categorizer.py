@@ -1,21 +1,22 @@
 from abc import ABC, abstractmethod
+from ast import arg
 
 class Categorizer(ABC):
     @abstractmethod
-    def categorize(self, subfolder, conversation_folder, thread, message):
+    def categorize(self, *args):
         pass
 
     def __mul__(self, other):
         return MultiCategorizer(self, other)
 
 class EmptyCategorizer(Categorizer):
-    def categorize(self, subfolder, conversation_folder, thread, message):
+    def categorize(self, *args):
         return None
 
 class UniqueCategorizer(Categorizer):
-    def categorize(self, subfolder, conversation_folder, thread, message):
+    def categorize(self, *args):
         #calculate hash of all arguments
-        return str(hash(subfolder)) + str(hash(conversation_folder)) + str(hash(thread)) + str(hash(message))
+        return "".join([str(hash(arg)) for arg in args])
 
 class SubfolderCategorizer(Categorizer):
     def categorize(self, subfolder, conversation_folder, thread, message):
@@ -30,5 +31,5 @@ class MultiCategorizer(Categorizer):
         self.categorizers = categorizers
         self.separator = separator
 
-    def categorize(self, subfolder, conversation_folder, thread, message):
-        return self.separator.join([str(categorizer.categorize(subfolder, conversation_folder, thread, message)) for categorizer in self.categorizers])
+    def categorize(self, *args):
+        return self.separator.join([str(categorizer.categorize(*args)) for categorizer in self.categorizers])
