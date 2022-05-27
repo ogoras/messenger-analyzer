@@ -22,4 +22,4 @@ class WordCountCategorizer(ContentCategorizer): #TODO: WFilter
         if not self.patterns:
             return len(content.split())
         else:
-            return len([process_word(word) for word in content.split() if any([match_words(process_word(word), pattern, self.match) for pattern in self.patterns])])
+            return len([process_word(word) for word in content.split() if any([match_words(pattern, process_word(word), self.match) for pattern in self.patterns])])

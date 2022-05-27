@@ -1,19 +1,22 @@
 from filtering.filter import CompositeFilter
 from filtering.message_filter import MessageFilter
 from abc import abstractmethod
+from filtering.wfilter import MatchWFilter
+from lib.conversions import decode_fb
 
 from lib.lexical_processing import match_words, process_word
 
 class ContentFilter(MessageFilter):
     def filter_message(self, message):
-        return "content" in message and self.filter_content(message["content"])
+        return "content" in message and self.filter_content(decode_fb(message["content"]))
 
     @abstractmethod
     def filter_content(self, content):
         pass
 
 class WordFilter(ContentFilter):
-    def __init__(self, action="or"):
+    def __init__(self, wfilter, action="or"):
+        self.wfilter = wfilter
         self.action = action
 
         #TODO: override __and__, __or__, __xor__ methods ?? -think about it!!
@@ -25,18 +28,17 @@ class WordFilter(ContentFilter):
             return all([self.filter_word(process_word(word)) for word in content.split()])
         #TODO: write the rest
     
-    @abstractmethod
     def filter_word(self, word):
-        pass
+        return self.wfilter.filter(word)
 
-class WordMatchFilter(WordFilter): #TODO: WFilter
-    def __init__(self, word, match="whole", action="or"):
-        super().__init__(action)
-        self.word = word
-        self.match = match
+# class WordMatchFilter(WordFilter): #TODO: WFilter
+#     def __init__(self, word, match="whole", action="or"):
+#         super().__init__(action)
+#         self.word = word
+#         self.match = match
 
-    def filter_word(self, word):
-        return match_words(word, self.word, self.match)
+#     def filter_word(self, word):
+#         return match_words(word, self.word, self.match)
 
 def words_filter(words, match="whole", action="or"):
-    return CompositeFilter([WordMatchFilter(word, match, action) for word in words], "or")
+    return CompositeFilter([WordFilter(MatchWFilter(word, match), action) for word in words], "or")
