@@ -23,22 +23,13 @@ class WordFilter(ContentFilter):
 
     def filter_content(self, content):
         if self.action == "or":
-            return any([self.filter_word(process_word(word)) for word in content.split()])
+            return any([self.filter_word(word) for word in content.split()])
         elif self.action == "and":
-            return all([self.filter_word(process_word(word)) for word in content.split()])
+            return all([self.filter_word(word) for word in content.split()])
         #TODO: write the rest
     
     def filter_word(self, word):
         return self.wfilter.filter(word)
-
-# class WordMatchFilter(WordFilter): #TODO: WFilter
-#     def __init__(self, word, match="whole", action="or"):
-#         super().__init__(action)
-#         self.word = word
-#         self.match = match
-
-#     def filter_word(self, word):
-#         return match_words(word, self.word, self.match)
 
 def words_filter(words, match="whole", action="or"):
     return CompositeFilter([WordFilter(MatchWFilter(word, match), action) for word in words], "or")

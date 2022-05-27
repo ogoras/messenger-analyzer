@@ -2,8 +2,9 @@ import argparse, sys
 from categorizing.content_categorizer import WordCountCategorizer
 
 from categorizing.time_categorizer import MonthCategorizer, YearCategorizer
-from filtering.content_filter import words_filter
+from filtering.content_filter import WordFilter, words_filter
 from filtering.filter import EmptyFilter
+from filtering.wfilter import CapitalizationWFilter, MatchWFilter
 from lib.loader import gen_messages, parse_folder
 from vocab.message_finder import MessageFinder
 from filtering.message_filter import senders_filter
@@ -37,11 +38,15 @@ if __name__ == '__main__':
             filter_to_add = ~filter_to_add
 
         filter &= filter_to_add
-
+    
     word_finder = MessageFinder(words_filter(args.words_to_match.split(), args.match), args.verbose)
+
     # lightweight version
     #word_finder = WordFinder(words_filter(args.words_to_match.split(), args.match), args.verbose)
-    # move filter_senders to gen_messages
+
+    # Example: Find messages where all words are capitalized, but don't include XDD...
+    #word_finder = MessageFinder(WordFilter(CapitalizationWFilter() & ~MatchWFilter("xd", "left"), "and"), args.verbose)
+
     for (subfolder, conversation_folder, thread, message) in gen_messages(master_folder, filter):
         word_finder.search_message(subfolder, conversation_folder, thread, message)
 

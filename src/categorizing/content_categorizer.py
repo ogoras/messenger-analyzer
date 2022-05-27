@@ -13,7 +13,7 @@ class ContentCategorizer(MessageCategorizer):
     def categorize_content(self, content):
         pass
 
-class WordCountCategorizer(ContentCategorizer): #TODO: WFilter
+class WordCountCategorizer(ContentCategorizer): #TODO: use WFilter instead
     def __init__(self, patterns=None, match="whole"):
         self.patterns = patterns
         self.match = match
