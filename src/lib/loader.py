@@ -74,9 +74,9 @@ def gen_messages(master_folder, filter=EmptyFilter(), verbose=False):
                         yield (subfolder, conversation_folder, thread, message)
 
 def load_dirs():
-    if not os.path.exists("saved_dirs.json"):
+    if not os.path.exists(os.path.join("saved", "saved_dirs.json")):
         return []
-    with open("saved_dirs.json", "r") as f:
+    with open(os.path.join("saved", "saved_dirs.json"), "r") as f:
         return json.load(f)
 
 def save_dir(dir_path):
@@ -88,7 +88,7 @@ def save_dir(dir_path):
 
     dir_list.append(dir_path)
 
-    with open("saved_dirs.json", "w") as f:
+    with open(os.path.join("saved", "saved_dirs.json"), "w") as f:
         json.dump(dir_list, f)
 
 class MyEncoder(json.JSONEncoder):
@@ -96,10 +96,12 @@ class MyEncoder(json.JSONEncoder):
         return o.__dict__ 
 
 def save(object, filename):
+    filename = os.path.join("saved", filename)
     with open(filename, "w") as f:
         json.dump(object, f, cls=MyEncoder)
 
 def load(filename):
+    filename = os.path.join("saved", filename)
     if not os.path.exists(filename):
         return {}
     with open(filename, "r", encoding='utf-8') as f:

@@ -10,16 +10,10 @@ Currently, there are 3 scripts that you can use:
 - `find_words`: Find specific words in your messages.
 
 ## Usage
-First you have to change directory to src:
-```
-cd src
-```
 
-Then you can run the scripts.
-
-To run, use:
+To run, use from the root directory:
 ```
-python -m script_name [arguments]
+python -m src.script_name [arguments]
 ```
 
 For example, to generate the vocabulary file, use:

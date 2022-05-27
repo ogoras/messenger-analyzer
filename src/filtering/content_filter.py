@@ -4,8 +4,6 @@ from abc import abstractmethod
 from .wfilter import MatchWFilter
 from ..lib.conversions import decode_fb
 
-from lib.lexical_processing import match_words, process_word
-
 class ContentFilter(MessageFilter):
     def filter_message(self, message):
         return "content" in message and self.filter_content(decode_fb(message["content"]))
