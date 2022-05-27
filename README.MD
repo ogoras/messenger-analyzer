@@ -18,12 +18,12 @@ python -m src.script_name [arguments]
 
 For example, to generate the vocabulary file, use:
 ```
-python -m generate_vocabulary --input "C:/Users/John/Documents/facebook-johndoe4"
+python -m src.generate_vocabulary --input "C:/Users/John/Documents/facebook-johndoe4"
 ```
 
 For help, use the -h flag. For instance:
 ```
-python -m find_words -h
+python -m src.find_words -h
 ```
 
 ## Unit testing
