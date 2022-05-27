@@ -1,13 +1,13 @@
 import argparse, sys
-from categorizing.message_categorizer import TypeCategorizer
-from filtering.category_filter import EqualsFilter
-from lib.lexical_processing import process_word
 
-from vocab.vocabulary_analyzer import VocabularyAnalyzer
-from vocab.vocabulary import Vocabulary
-from filtering.message_filter import TimeFilter
-from lib.loader import gen_messages, parse_folder
-from lib.conversions import date_to_timestamp, decode_fb
+from .categorizing.message_categorizer import TypeCategorizer
+from .filtering.category_filter import EqualsFilter
+from .lib.lexical_processing import process_word
+from .vocab.vocabulary_analyzer import VocabularyAnalyzer
+from .vocab.vocabulary import Vocabulary
+from .filtering.message_filter import TimeFilter
+from .lib.loader import gen_messages, parse_folder
+from .lib.conversions import date_to_timestamp, decode_fb
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Analyze your messages')

@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from ast import arg
 
 class Categorizer(ABC):
     @abstractmethod

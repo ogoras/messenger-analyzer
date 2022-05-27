@@ -18,7 +18,6 @@
 # 7. thread participants
 
 from abc import ABC, abstractmethod
-from categorizing.categorizer import Categorizer
 
 class Filter(ABC):
     @abstractmethod

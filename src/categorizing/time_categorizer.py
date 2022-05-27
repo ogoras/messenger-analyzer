@@ -1,4 +1,4 @@
-from categorizing.message_categorizer import MessageCategorizer
+from .message_categorizer import MessageCategorizer
 from abc import abstractmethod
 from datetime import datetime
 

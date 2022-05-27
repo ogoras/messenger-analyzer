@@ -1,8 +1,8 @@
-from filtering.filter import CompositeFilter
-from filtering.message_filter import MessageFilter
+from .filter import CompositeFilter
+from .message_filter import MessageFilter
 from abc import abstractmethod
-from filtering.wfilter import MatchWFilter
-from lib.conversions import decode_fb
+from .wfilter import MatchWFilter
+from ..lib.conversions import decode_fb
 
 from lib.lexical_processing import match_words, process_word
 

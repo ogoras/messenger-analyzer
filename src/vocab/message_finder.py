@@ -1,6 +1,5 @@
-from categorizing.categorizer import Categorizer
-from lib.lexical_processing import process_word, match_words
-from lib.conversions import print_message, decode_fb
+from ..categorizing.categorizer import Categorizer
+from ..lib.conversions import print_message, decode_fb
 
 class MessageFinder:
     def __init__(self, counter, verbosity = 0):

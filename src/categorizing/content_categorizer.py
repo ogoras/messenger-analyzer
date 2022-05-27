@@ -1,6 +1,6 @@
 from abc import abstractmethod
-from categorizing.message_categorizer import MessageCategorizer
-from lib.lexical_processing import match_words, process_word
+from .message_categorizer import MessageCategorizer
+from ..lib.lexical_processing import match_words, process_word
 
 class ContentCategorizer(MessageCategorizer):
     def categorize_message(self, message):

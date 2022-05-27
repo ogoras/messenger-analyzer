@@ -1,7 +1,7 @@
-from categorizing.message_categorizer import SenderCategorizer
-from filtering.filter import Filter, CompositeFilter
+from ..categorizing.message_categorizer import SenderCategorizer
+from .filter import Filter, CompositeFilter
 from abc import abstractmethod
-from filtering.category_filter import MatchFilter
+from .category_filter import MatchFilter
 
 class MessageFilter(Filter):
     def filter(self, subfolder, conversation_folder, thread, message):

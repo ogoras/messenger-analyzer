@@ -1,9 +1,8 @@
-from categorizing.message_categorizer import SenderCategorizer
-import lib.loader as loader
-
+from ..categorizing.message_categorizer import SenderCategorizer
+from ..lib import loader
 from vocab.vocabulary import Vocabulary
-from lib.conversions import decode_fb
-from lib.lexical_processing import process_word
+from ..lib.conversions import decode_fb
+from ..lib.lexical_processing import process_word
 
 class VocabularyAnalyzer:
     def __init__(self, categorizer=SenderCategorizer()):

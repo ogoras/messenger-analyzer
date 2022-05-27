@@ -1,6 +1,6 @@
-from categorizing.categorizer import Categorizer
+from .categorizer import Categorizer
 from abc import abstractmethod
-from lib.conversions import decode_fb
+from ..lib.conversions import decode_fb
 
 class MessageCategorizer(Categorizer):
     def categorize(self, subfolder, conversation_folder, thread, message):

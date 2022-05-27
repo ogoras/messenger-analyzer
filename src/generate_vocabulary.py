@@ -1,10 +1,9 @@
-import argparse, os, sys
-from categorizing.time_categorizer import DayCategorizer, HourCategorizer, MinuteCategorizer, MonthCategorizer, YearCategorizer
+import argparse, sys
 
-from vocab.vocabulary_analyzer import VocabularyAnalyzer
-from lib.loader import gen_messages, parse_folder
-from categorizing.message_categorizer import TypeCategorizer
-from filtering.category_filter import EqualsFilter
+from .vocab.vocabulary_analyzer import VocabularyAnalyzer
+from .lib.loader import gen_messages, parse_folder
+from .categorizing.message_categorizer import TypeCategorizer
+from .filtering.category_filter import EqualsFilter
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')

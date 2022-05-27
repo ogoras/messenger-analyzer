@@ -1,7 +1,8 @@
 import os
 import json
-from lib.conversions import print_fb
-from filtering.filter import EmptyFilter
+
+from .conversions import print_fb
+from ..filtering.filter import EmptyFilter
 
 #TYPES:
 # Subscribe - someone joined (for group chats)

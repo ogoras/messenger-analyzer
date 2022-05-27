@@ -1,7 +1,6 @@
-from filtering.filter import Filter
+from .filter import Filter
 from abc import abstractmethod
-
-from lib.lexical_processing import match_words, process_word
+from ..lib.lexical_processing import match_words, process_word
 
 class WFilter(Filter):
     def filter(self, word):
