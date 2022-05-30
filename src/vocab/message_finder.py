@@ -1,4 +1,4 @@
-from ..categorizing.categorizer import Categorizer
+from ..categorizing.counter import Counter
 from ..lib.conversions import print_message, decode_fb
 
 class MessageFinder:
@@ -6,7 +6,7 @@ class MessageFinder:
         self.message_cache = None
         self.print_next = 0
         self.counter = counter
-        self.counting = isinstance(counter, Categorizer) #ONLY USE CATEGORIZERS THAT RETURN A NUMBER
+        self.counting = isinstance(counter, Counter)
         self.verbosity = verbosity
         self.message_count = 0
         self.count = 0

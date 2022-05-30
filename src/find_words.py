@@ -1,5 +1,6 @@
 import argparse, sys
 
+from .categorizing.content_categorizer import WordCountCategorizer
 from .categorizing.time_categorizer import MonthCategorizer, YearCategorizer
 from .filtering.content_filter import WordFilter, words_filter
 from .filtering.wfilter import CapitalizationWFilter, MatchWFilter
@@ -37,7 +38,7 @@ if __name__ == '__main__':
 
         filter &= filter_to_add
     
-    word_finder = MessageFinder(words_filter(args.words_to_match.split(), args.match), args.verbose)
+    word_finder = MessageFinder(WordCountCategorizer(args.words_to_match.split(), args.match), args.verbose)
 
     # lightweight version
     #word_finder = WordFinder(words_filter(args.words_to_match.split(), args.match), args.verbose)
