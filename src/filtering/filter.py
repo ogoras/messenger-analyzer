@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 
 class Filter(ABC):
     @abstractmethod
-    def filter(self, *args):
+    def filter(self, *args) -> bool:
         pass
 
     def __invert__(self):
@@ -47,13 +47,13 @@ class EmptyFilter(Filter):
         return True
 
 class CompositeFilter(Filter):
-    def __init__(self, filters = [], action="and"):
+    def __init__(self, filters : list[Filter] = [], action="and"):
         self.filters = filters
         self.action = action
         if action == "xor" and len(filters != 2):
             raise Exception("XOR filter needs exactly 2 filters")
 
-    def filter(self, *args):
+    def filter(self, *args) -> bool:
         if self.action == "and":
             return all([f.filter(*args) for f in self.filters])
         elif self.action == "or":
@@ -64,7 +64,7 @@ class CompositeFilter(Filter):
             raise Exception("Unknown action: " + self.action)
 
 class NegationFilter(Filter):
-    def __init__(self, filter):
+    def __init__(self, filter : Filter):
         self.inner_filter = filter
 
     def filter(self, *args):

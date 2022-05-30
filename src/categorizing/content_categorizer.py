@@ -1,4 +1,6 @@
 from abc import abstractmethod
+
+from ..filtering.wfilter import WFilter
 from .message_categorizer import MessageCategorizer
 from ..lib.lexical_processing import match_words, process_word
 from .counter import Counter
@@ -14,13 +16,9 @@ class ContentCategorizer(MessageCategorizer):
     def categorize_content(self, content):
         pass
 
-class WordCountCategorizer(ContentCategorizer, Counter): #TODO: use WFilter instead
-    def __init__(self, patterns=None, match="whole"):
-        self.patterns = patterns
-        self.match = match
+class WordCounter(ContentCategorizer, Counter):
+    def __init__(self, wfilter : WFilter):
+        self.wfilter = wfilter
 
-    def categorize_content(self, content):
-        if not self.patterns:
-            return len(content.split())
-        else:
-            return len([process_word(word) for word in content.split() if any([match_words(pattern, process_word(word), self.match) for pattern in self.patterns])])
+    def categorize_content(self, content) -> int:
+        return len([process_word(word) for word in content.split() if self.wfilter.filter(process_word(word))])
