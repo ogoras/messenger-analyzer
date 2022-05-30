@@ -13,7 +13,7 @@ class ContentCategorizer(MessageCategorizer):
             return None
 
     @abstractmethod
-    def categorize_content(self, content):
+    def categorize_content(self, content : str):
         pass
 
 class WordCounter(ContentCategorizer, Counter):

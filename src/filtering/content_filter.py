@@ -1,7 +1,7 @@
 from .filter import CompositeFilter
 from .message_filter import MessageFilter
 from abc import abstractmethod
-from .wfilter import MatchWFilter
+from .wfilter import MatchWFilter, WFilter
 from ..lib.conversions import decode_fb
 
 class ContentFilter(MessageFilter):
@@ -9,11 +9,11 @@ class ContentFilter(MessageFilter):
         return "content" in message and self.filter_content(decode_fb(message["content"]))
 
     @abstractmethod
-    def filter_content(self, content):
+    def filter_content(self, content : str):
         pass
 
 class WordFilter(ContentFilter):
-    def __init__(self, wfilter, action="or"):
+    def __init__(self, wfilter : WFilter, action="or"):
         self.wfilter = wfilter
         self.action = action
 

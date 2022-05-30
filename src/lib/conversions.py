@@ -10,7 +10,7 @@ def timestamp_to_date_string(timestamp):
 def date_to_timestamp(year, month=1, day=1, hour=0, minute=0, second=0):
     return datetime.datetime(year, month, day, hour, minute, second).timestamp() * 1000
 
-def decode_fb(string):
+def decode_fb(string : str):
     return string.encode('latin1').decode('utf8')
 
 def print_message(message):

@@ -1,16 +1,18 @@
+from __future__ import annotations
+
 class Vocabulary:
     def __init__(self, from_json=None):
-        self.dict = {}
-        self.normalized = None  #dict
-        self.sorted = None      #list
-        self.relative = {}
-        self.relative_sorted = None
+        self.dict : dict[str, int] = {}
+        self.normalized : dict[str, float] = None
+        self.sorted : list[str] = None
+        self.relative : dict[str, float] = {}
+        self.relative_sorted : list[str] = None
 
-        self.message_count = 0
-        self.word_count = 0
-        self.distinct_word_count = 0
-        self.normalization_bias = 0
-        self.print_first = True
+        self.message_count : int = 0
+        self.word_count : int = 0
+        self.distinct_word_count : int = 0
+        self.normalization_bias : float = 0
+        self.print_first : bool = True
 
         if from_json != None:
             self.dict = from_json["dict"]
@@ -90,7 +92,7 @@ class Vocabulary:
             print(print_string)
         print("")
 
-    def relate(self, master_vocabulary):
+    def relate(self, master_vocabulary : Vocabulary):
         self.relative_sorted = None
         self.relative = {}
         #TODO: remove hardcoded bias

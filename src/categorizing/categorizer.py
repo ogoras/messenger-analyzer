@@ -26,7 +26,7 @@ class ConversationCategorizer(Categorizer):
         return conversation_folder
 
 class MultiCategorizer(Categorizer):
-    def __init__(self, *categorizers, separator = " "):
+    def __init__(self, *categorizers : Categorizer, separator = " "):
         self.categorizers = categorizers
         self.separator = separator
 

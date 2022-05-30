@@ -1,14 +1,15 @@
+from ..categorizing.categorizer import Categorizer
 from ..categorizing.message_categorizer import SenderCategorizer
 from ..lib import loader
-from vocab.vocabulary import Vocabulary
+from .vocabulary import Vocabulary
 from ..lib.conversions import decode_fb
 from ..lib.lexical_processing import process_word
 
 class VocabularyAnalyzer:
-    def __init__(self, categorizer=SenderCategorizer()):
+    def __init__(self, categorizer : Categorizer = SenderCategorizer()):
         #TODO: add master folder as a parameter
         #TODO: relative vocabs as a function, not fields
-        self.vocabs_by_category = {}
+        self.vocabs_by_category : dict[any, Vocabulary] = {}
         self.average_vocab = Vocabulary()
         self.total_vocab = Vocabulary()
         self.categorizer = categorizer

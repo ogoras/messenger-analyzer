@@ -1,9 +1,10 @@
+from ..categorizing.categorizer import Categorizer
 from .filter import Filter
 from abc import abstractmethod
 from ..lib.lexical_processing import match_words
 
 class CategoryFilter(Filter):
-    def __init__(self, categorizer):
+    def __init__(self, categorizer : Categorizer):
         self.categorizer = categorizer
 
     def filter(self, *args):

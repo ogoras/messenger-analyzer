@@ -3,7 +3,7 @@ from abc import abstractmethod
 from ..lib.lexical_processing import match_words, process_word
 
 class WFilter(Filter):
-    def filter(self, word):
+    def filter(self, word : str):
         pass
 
 class MatchWFilter(WFilter):
