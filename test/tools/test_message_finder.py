@@ -33,8 +33,8 @@ class MessageFinderTest(unittest.TestCase):
         self.assertEqual(finder.message_count, 7)
         self.assertEqual(finder.verbosity, 0)
         self.assertEqual(finder.count, 0)
-        self.assertEqual(finder.counts_by_sender, {})
-        self.assertEqual(finder.messages_by_sender, {"Whatever": 7})
+        self.assertEqual(finder.counts_by_category, {})
+        self.assertEqual(finder.messages_by_category, {"Whatever": 7})
         self.assertFalse(finder.counting)
 
     def test_counting_words(self):
@@ -50,6 +50,6 @@ class MessageFinderTest(unittest.TestCase):
         self.assertEqual(finder.message_count, 7)
         self.assertEqual(finder.verbosity, 0)
         self.assertEqual(finder.count, 9)
-        self.assertEqual(finder.counts_by_sender, {"Whatever": 9})
-        self.assertEqual(finder.messages_by_sender, {"Whatever": 7})
+        self.assertEqual(finder.counts_by_category, {"Whatever": 9})
+        self.assertEqual(finder.messages_by_category, {"Whatever": 7})
         self.assertTrue(finder.counting)

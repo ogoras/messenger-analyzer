@@ -1,8 +1,10 @@
+from src.categorizing.categorizer import Categorizer
+from src.categorizing.message_categorizer import SenderCategorizer
 from ..categorizing.counter import Counter
 from ..lib.conversions import print_message, decode_fb
 
 class MessageFinder:
-    def __init__(self, counter, verbosity = 0):
+    def __init__(self, counter, verbosity = 0, categorizer = SenderCategorizer()):
         self.message_cache = None
         self.print_next = 0
         self.counter = counter
@@ -10,8 +12,9 @@ class MessageFinder:
         self.verbosity = verbosity
         self.message_count = 0
         self.count = 0
-        self.counts_by_sender = {}  #TODO: by_category
-        self.messages_by_sender = {}
+        self.counts_by_category = {}
+        self.messages_by_category = {}
+        self.categorizer = categorizer
 
     def search_message(self, subfolder, conversation_folder, thread, message):
         if (self.print_next > 0):
@@ -20,7 +23,7 @@ class MessageFinder:
             if self.print_next == 0:
                 print("----------")
 
-        sender = decode_fb(message["sender_name"])
+        category = self.categorizer.categorize(subfolder, conversation_folder, thread, message)
         
         filter_this = None
 
@@ -28,13 +31,13 @@ class MessageFinder:
             count = self.counter.categorize(subfolder, conversation_folder, thread, message) or 0
             filter_this = count > 0
             self.count += count if filter_this else 0
-            self.counts_by_sender[sender] = self.counts_by_sender.get(sender, 0) + (count if filter_this else 0)
+            self.counts_by_category[category] = self.counts_by_category.get(category, 0) + (count if filter_this else 0)
         else:
             filter_this = self.counter.filter(subfolder, conversation_folder, thread, message)
 
         if filter_this:
             self.message_count += 1
-            self.messages_by_sender[sender] = self.messages_by_sender.get(sender, 0) + 1
+            self.messages_by_category[category] = self.messages_by_category.get(category, 0) + 1
             if self.message_cache != None and self.print_next == 0:
                 print_message(self.message_cache)
             if self.verbosity > 1 and self.print_next == 0:
@@ -54,10 +57,10 @@ class MessageFinder:
         if self.verbosity > 0:
             print("")
             print("Number of occurences by sender:")
-            for sender in self.messages_by_sender:
+            for sender in self.messages_by_category:
                 print_string = sender + ": "
                 if self.counting:
-                    print_string += str(self.counts_by_sender[sender]) + " occurences in "
-                print_string += str(self.messages_by_sender[sender]) + " messages"
+                    print_string += str(self.counts_by_category[sender]) + " occurences in "
+                print_string += str(self.messages_by_category[sender]) + " messages"
                 print(print_string)
             print("")
