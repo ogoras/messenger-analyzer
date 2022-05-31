@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
         filter &= filter_to_add
     
-    word_finder = MessageFinder(WordCounter(CompositeFilter([MatchWFilter(word, "whole") for word in args.words_to_match.split()], "or")), args.verbose)
+    word_finder = MessageFinder(WordCounter(CompositeFilter([MatchWFilter(word, "whole") for word in args.words_to_match.split()], "or")), args.verbose) #, YearCategorizer())
 
     # lightweight version
     #word_finder = WordFinder(words_filter(args.words_to_match.split(), args.match), args.verbose)

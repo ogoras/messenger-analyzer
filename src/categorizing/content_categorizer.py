@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+from src.lib.conversions import decode_fb
+
 from ..filtering.wfilter import WFilter
 from .message_categorizer import MessageCategorizer
 from ..lib.lexical_processing import match_words, process_word
@@ -7,10 +9,7 @@ from .counter import Counter
 
 class ContentCategorizer(MessageCategorizer):
     def categorize_message(self, message):
-        if "content" in message:
-            return self.categorize_content(message["content"])
-        else:
-            return None
+        return "content" in message and self.categorize_content(decode_fb(message["content"]))
 
     @abstractmethod
     def categorize_content(self, content : str):

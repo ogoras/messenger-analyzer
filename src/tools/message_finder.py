@@ -56,11 +56,11 @@ class MessageFinder:
 
         if self.verbosity > 0:
             print("")
-            print("Number of occurences by sender:")
-            for sender in self.messages_by_category:
-                print_string = sender + ": "
+            print("Number of occurences by category:")
+            for category in sorted(self.messages_by_category):
+                print_string = str(category) + ": "
                 if self.counting:
-                    print_string += str(self.counts_by_category[sender]) + " occurences in "
-                print_string += str(self.messages_by_category[sender]) + " messages"
+                    print_string += str(self.counts_by_category[category]) + " occurences in "
+                print_string += str(self.messages_by_category[category]) + " messages"
                 print(print_string)
             print("")
