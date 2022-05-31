@@ -72,3 +72,8 @@ class TestWordFilter(unittest.TestCase):
         self.assertTrue(wordfilter.filter("", "", None,  {"content": "bar bar bar"}))
         self.assertFalse(wordfilter.filter("", "", None,  {"content": ""}))
         self.assertFalse(wordfilter.filter("", "", None,  {"content": "something irrelevant"}))
+    
+    def test_unknown_action(self):
+        wfilter = MatchWFilter("foo", "whole")
+        wordfilter = WordFilter(wfilter, "bogus action")
+        self.assertRaises(Exception, wordfilter.filter, "", "", None,  {"content": "foo"})
