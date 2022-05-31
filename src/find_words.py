@@ -6,7 +6,7 @@ from .categorizing.time_categorizer import MonthCategorizer, YearCategorizer
 from .filtering.content_filter import WordFilter, words_filter
 from .filtering.wfilter import CapitalizationWFilter, MatchWFilter
 from .lib.loader import gen_messages, parse_folder
-from .vocab.message_finder import MessageFinder
+from .tools.message_finder import MessageFinder
 from .filtering.message_filter import senders_filter
 from .filtering.category_filter import EqualsFilter
 from .categorizing.message_categorizer import TypeCategorizer
