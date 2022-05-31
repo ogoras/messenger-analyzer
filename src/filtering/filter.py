@@ -50,7 +50,7 @@ class CompositeFilter(Filter):
     def __init__(self, filters : list[Filter] = [], action="and"):
         self.filters = filters
         self.action = action
-        if action == "xor" and len(filters != 2):
+        if action == "xor" and len(filters) != 2:
             raise Exception("XOR filter needs exactly 2 filters")
 
     def filter(self, *args) -> bool:

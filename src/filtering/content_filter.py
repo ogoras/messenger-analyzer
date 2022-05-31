@@ -16,7 +16,7 @@ class WordFilter(ContentFilter):
     def __init__(self, wfilter : WFilter, action="or"):
         self.wfilter = wfilter
         self.action = action
-
+        
         #TODO: override __and__, __or__, __xor__ methods ?? -think about it!!
 
     def filter_content(self, content):
