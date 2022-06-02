@@ -104,7 +104,7 @@ class Vocabulary:
     def relate(self, master_vocabulary : Vocabulary):
         self.relative_sorted = None
         self.relative = {}
-        #TODO: remove hardcoded bias
+        
         master_vocabulary.normalize(master_vocabulary.normalization_bias)
         
         self.normalize(self.normalization_bias)
