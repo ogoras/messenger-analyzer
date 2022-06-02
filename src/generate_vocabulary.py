@@ -1,26 +1,28 @@
-import argparse, sys
+# import argparse, sys
 
-from .vocab.vocabulary_analyzer import VocabularyAnalyzer
-from .lib.loader import gen_messages, parse_folder
-from .categorizing.message_categorizer import TypeCategorizer
-from .filtering.category_filter import EqualsFilter
+# from .tools.vocabulary_analyzer import VocabularyAnalyzer
+# from .lib.loader import gen_messages, parse_folder
+# from .categorizing.message_categorizer import TypeCategorizer
+# from .filtering.category_filter import EqualsFilter
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
-    parser.add_argument('-i', '--input', help='Your Facebook data folder (should contain the folder "messages" inside it)')
-    parser.add_argument('-v', '--verbose', help='Additional info', action='count', default=0)
+# if __name__ == '__main__':
+#     parser = argparse.ArgumentParser(description='Generate a vocabulary data file')
+#     parser.add_argument('-i', '--input', help='Your Facebook data folder (should contain the folder "messages" inside it)')
+#     parser.add_argument('-v', '--verbose', help='Additional info', action='count', default=0)
 
-    args = parser.parse_args()
+#     args = parser.parse_args()
 
-    master_folder = parse_folder(args.input, sys.argv[0])
+#     master_folder = parse_folder(args.input, sys.argv[0])
 
-    # put in a categorizer of your choice and have fun!
-    vocab_analyzer = VocabularyAnalyzer()
+#     # put in a categorizer of your choice and have fun!
+#     vocab_analyzer = VocabularyAnalyzer()
 
-    filter = EqualsFilter(TypeCategorizer(), "Generic")
+#     filter = EqualsFilter(TypeCategorizer(), "Generic")
 
-    for (subfolder, conversation_folder, thread, message) in gen_messages(master_folder, filter, verbose = args.verbose > 1):
-        vocab_analyzer.add_message_to_vocabulary(message)
+#     for (subfolder, conversation_folder, thread, message) in gen_messages(master_folder, filter, verbose = args.verbose > 1):
+#         vocab_analyzer.add_message_to_vocabulary(message)
 
-    vocab_analyzer.calculate_average_vocab()
-    vocab_analyzer.save_vocab()
+#     vocab_analyzer.calculate_average_vocab()
+#     vocab_analyzer.save_vocab()
+
+print("This script is to be removed. Uncomment the lines above to use it.")

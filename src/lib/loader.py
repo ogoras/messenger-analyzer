@@ -2,7 +2,7 @@ import os
 import json
 
 from .conversions import print_fb
-from ..filtering.filter import EmptyFilter
+from ..filtering.filter import EmptyFilter, Filter
 
 #TYPES:
 # Subscribe - someone joined (for group chats)
@@ -33,7 +33,7 @@ def parse_folder(input, script_name):
         try:
             master_folder = load_dirs()[-1]
         except IndexError:
-            print("No Facebook data folder found. Please run:\n\tpython " + script_name+  " -i <path to folder>\n")
+            print("No Facebook data folder found. Please run:\n\tpython " + script_name +  " -i <path to folder>\n")
             print("first to remember the Facebook data folder.")
             exit()
     
@@ -61,7 +61,7 @@ def read_folder(conversation_folder):
 
     return threads
 
-def gen_messages(master_folder, filter=EmptyFilter(), verbose=False):
+def gen_messages(master_folder, filter : Filter = EmptyFilter(), verbose=False):
 
     for subfolder in ["archived_threads", "filtered_threads", "inbox"]:
         for conversation_folder in os.listdir(os.path.join(master_folder, subfolder)):

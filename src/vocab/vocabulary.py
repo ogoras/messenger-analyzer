@@ -96,7 +96,7 @@ class Vocabulary:
         self.relative_sorted = None
         self.relative = {}
         #TODO: remove hardcoded bias
-        master_vocabulary.normalize(0.01)
+        master_vocabulary.normalize(master_vocabulary.normalization_bias)
         
         self.normalize(self.normalization_bias)
         for word in self.normalized:

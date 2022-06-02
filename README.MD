@@ -5,8 +5,7 @@ In order to use this tool, you need to [download your messages from Facebook](ht
 
 ## Scripts
 Currently, there are 3 scripts that you can use:
-- `generate_vocabulary`: Generates a vocabulary file from the messages.
-- `analyze_vocabulary`: Analyze vocabulary saved in vocab.json. This should be run after `generate_vocabulary`.
+- `analyze_vocabulary`: Analyze vocabulary in your messages.
 - `find_words`: Find specific words in your messages.
 
 ## Usage
@@ -16,9 +15,9 @@ To run, use from the root directory:
 python -m src.script_name [arguments]
 ```
 
-For example, to generate the vocabulary file, use:
+For example, to analyze vocabulary for the first time, use:
 ```
-python -m src.generate_vocabulary --input "C:/Users/John/Documents/facebook-johndoe4"
+python -m src.analyze_vocabulary --input "C:/Users/John/Documents/facebook-johndoe4"
 ```
 
 For help, use the -h flag. For instance:
