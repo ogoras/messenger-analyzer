@@ -8,7 +8,6 @@ from ..lib.lexical_processing import process_word
 
 class VocabularyAnalyzer:
     def __init__(self, categorizer : Categorizer = SenderCategorizer(), path = None, verbose = 0):
-        #TODO: relative vocabs as a function, not fields
         self.vocabs_by_category : dict[any, Vocabulary] = {}
         self.average_vocab = Vocabulary()
         self.total_vocab = Vocabulary()
@@ -35,13 +34,8 @@ class VocabularyAnalyzer:
 
             content = decode_fb(message["content"])
 
-            vocab_by_sender.increment_message()
-            self.total_vocab.increment_message()
-
-            for word in content.split():
-                word = process_word(word)
-                vocab_by_sender.increment(word)
-                self.total_vocab.increment(word)
+            vocab_by_sender.add_content(content)
+            self.total_vocab.add_content(content)
 
     def calculate_average_vocab(self):
         self.sorted = False
@@ -59,6 +53,18 @@ class VocabularyAnalyzer:
             return self.total_vocab
         else:
             return self.vocabs_by_category[category]
+
+    def get_relative_vocab(self, filter, scaled=True):
+        relative_vocab = Vocabulary()
+        for (subfolder, conversation_folder, thread, message) in loader.gen_messages(self.path, filter):
+            if "content" in message:
+                content = decode_fb(message["content"])
+                relative_vocab.add_content(content)
+        if scaled:
+            relative_vocab.relate(self.average_vocab)
+        else:
+            relative_vocab.relate(self.total_vocab)
+        return relative_vocab
 
     def print_characteristic_vocab(self, category, n_words=10, scaled=True):
         if scaled:

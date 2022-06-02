@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ..lib.lexical_processing import process_word
+
 class Vocabulary:
     def __init__(self, from_json=None):
         self.dict : dict[str, int] = {}
@@ -25,6 +27,13 @@ class Vocabulary:
             self.relative_sorted = from_json["relative_sorted"]
             self.normalization_bias = from_json["normalization_bias"]
     
+    def add_content(self, content : str):
+        self.increment_message()
+
+        for word in content.split():
+            word = process_word(word)
+            self.increment(word)
+
     def increment(self, word, increment=1):
         #TODO: unit tests!
         self.sorted = None

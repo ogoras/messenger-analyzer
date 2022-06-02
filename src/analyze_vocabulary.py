@@ -1,7 +1,7 @@
 import argparse, sys
 
 from .categorizing.message_categorizer import SenderCategorizer, TypeCategorizer
-from .filtering.category_filter import EqualsFilter
+from .filtering.category_filter import CategoryFilter, EqualsFilter
 from .lib.lexical_processing import process_word
 from .tools.vocabulary_analyzer import VocabularyAnalyzer
 from .vocab.vocabulary import Vocabulary
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     if (args.person != None):
         for sender in args.person:
             print(sender, vocab_analyzer.vocabs_by_category[sender].message_count, "messages")
-            vocab_analyzer.get_vocab(sender).print(n_words)
+            vocab_analyzer.get_relative_vocab(EqualsFilter(SenderCategorizer(), sender)).print(n_words)
             print("Characteristic words:")
             vocab_analyzer.print_characteristic_vocab(sender, n_words)
 
