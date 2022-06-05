@@ -1,4 +1,4 @@
-from src.filtering.filter import EmptyFilter
+from ..filtering.filter import EmptyFilter, Filter
 from ..categorizing.categorizer import Categorizer
 from ..categorizing.message_categorizer import SenderCategorizer
 from ..lib import loader
@@ -45,9 +45,6 @@ class VocabularyAnalyzer:
             magnitude_order = len(str(self.vocabs_by_category[category].distinct_word_count))
             for word in self.vocabs_by_category[category].dict:
                 self.average_vocab.increment(word, self.vocabs_by_category[category].dict[word]/self.vocabs_by_category[category].word_count*magnitude_order)
-        
-        #TODO: bias as a parameter?
-        self.average_vocab.normalize(0.01)
 
     def get_vocab(self, category = None):
         if category == None:
@@ -55,23 +52,23 @@ class VocabularyAnalyzer:
         else:
             return self.vocabs_by_category[category]
 
-    def get_relative_vocab(self, filter, scaled=True):
+    def get_relative_vocab(self, filter : Filter, bias : float = 0, scaled = True):
         relative_vocab = Vocabulary()
         for (subfolder, conversation_folder, thread, message) in loader.gen_messages(self.path, filter):
             if "content" in message:
                 content = decode_fb(message["content"])
                 relative_vocab.add_content(content)
         if scaled:
-            relative_vocab.relate(self.average_vocab)
+            relative_vocab.relate(self.average_vocab, bias)
         else:
-            relative_vocab.relate(self.total_vocab)
+            relative_vocab.relate(self.total_vocab, bias)
         return relative_vocab
 
     def print_characteristic_vocab(self, category, n_words=10, scaled=True):
         if scaled:
-            self.vocabs_by_category[category].relate(self.average_vocab)
+            self.vocabs_by_category[category].relate(self.average_vocab, 0.01)
         else:
-            self.vocabs_by_category[category].relate(self.total_vocab)
+            self.vocabs_by_category[category].relate(self.total_vocab, 0.01)
         self.vocabs_by_category[category].print(n_words, True, self.get_vocab().dict)
 
     def sort(self):

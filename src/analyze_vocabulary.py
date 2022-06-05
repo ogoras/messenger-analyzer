@@ -1,5 +1,7 @@
 import argparse, sys
+from xmlrpc.client import FastUnmarshaller
 
+from .categorizing.time_categorizer import YearCategorizer
 from .categorizing.message_categorizer import SenderCategorizer, TypeCategorizer
 from .filtering.category_filter import CategoryFilter, EqualsFilter
 from .lib.lexical_processing import process_word
@@ -36,10 +38,10 @@ if __name__ == "__main__":
     if (args.person != None):
         for sender in args.person:
             print(sender, vocab_analyzer.vocabs_by_category[sender].message_count, "messages")
-            vocab = vocab_analyzer.get_relative_vocab(EqualsFilter(SenderCategorizer(), sender))
+            vocab = vocab_analyzer.get_relative_vocab(EqualsFilter(SenderCategorizer(), sender), 0.01)
             vocab.print(n_words)
             print("Characteristic words:")
-            vocab.print(n_words, True, vocab_analyzer.get_vocab().dict)
+            vocab.print(n_words, True)
 
     vocab_analyzer.print_top(n_senders, n_words)
 
@@ -49,19 +51,11 @@ if __name__ == "__main__":
         vocab_analyzer.get_vocab().print(n_words)
     
     if args.year:
-        master_folder = parse_folder(args.input, sys.argv[0])
         filter = EqualsFilter(TypeCategorizer(), "Generic")
-        filter &= TimeFilter(date_to_timestamp(args.year), date_to_timestamp(args.year + 1))
-        year_vocab = Vocabulary()
+        filter &= EqualsFilter(YearCategorizer(), int(args.year))
 
-        for (subfolder, conversation_folder, thread, message) in gen_messages(master_folder, filter):
-            if "content" in message:
-                year_vocab.increment_message()
-                content = decode_fb(message["content"])
-
-                for word in content.split():
-                    word = process_word(word)
-                    year_vocab.increment(word)
-        
-        year_vocab.relate(vocab_analyzer.get_vocab())
-        year_vocab.print(n_words, True, vocab_analyzer.get_vocab().dict)
+        #TODO: Why the heck do I need a different bias here?
+        vocab = vocab_analyzer.get_relative_vocab(filter, 30, False)
+        # vocab.print(n_words)
+        print("Characteristic words:")
+        vocab.print(n_words, True)

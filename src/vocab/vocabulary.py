@@ -1,4 +1,5 @@
 from __future__ import annotations
+from doctest import master
 
 from ..lib.lexical_processing import process_word
 
@@ -15,6 +16,7 @@ class Vocabulary:
         self.distinct_word_count : int = 0
         self.normalization_bias : float = 0
         self.print_first : bool = True
+        self.master_vocabulary : Vocabulary = None
 
         if from_json != None:
             self.dict = from_json["dict"]
@@ -75,6 +77,9 @@ class Vocabulary:
         self.sort()
         self.normalize(self.normalization_bias)
 
+        if master_vocabulary is None:
+            master_vocabulary = self.master_vocabulary
+
         if relative:
             sorted = self.relative_sorted
         else:
@@ -92,7 +97,7 @@ class Vocabulary:
             print_string += "| used " + str(self.dict[word]) + " times"
 
             if master_vocabulary != None: 
-                print_string += " out of " + str(master_vocabulary[word]) + " found overall"
+                print_string += " out of " + str(master_vocabulary.dict[word]) + " found overall"
             
             if percentage:
                 #print 2 significant digits, not 2 digits after the comma
@@ -101,11 +106,15 @@ class Vocabulary:
             print(print_string)
         print("")
 
-    def relate(self, master_vocabulary : Vocabulary):
+    def relate(self, master_vocabulary : Vocabulary, bias : float = None):
         self.relative_sorted = None
         self.relative = {}
+        self.master_vocabulary = master_vocabulary
+
+        if bias == None:
+            bias = master_vocabulary.normalization_bias
         
-        master_vocabulary.normalize(master_vocabulary.normalization_bias)
+        master_vocabulary.normalize(bias)
         
         self.normalize(self.normalization_bias)
         for word in self.normalized:
