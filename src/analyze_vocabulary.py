@@ -1,7 +1,10 @@
 import argparse, sys
 from xmlrpc.client import FastUnmarshaller
 
-from .categorizing.time_categorizer import YearCategorizer
+from src.categorizing.categorizer import ConversationCategorizer
+from src.filtering.filter import EmptyFilter
+
+from .categorizing.time_categorizer import MonthCategorizer, YearCategorizer
 from .categorizing.message_categorizer import SenderCategorizer, TypeCategorizer
 from .filtering.category_filter import CategoryFilter, EqualsFilter
 from .lib.lexical_processing import process_word
@@ -23,7 +26,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    vocab_analyzer = VocabularyAnalyzer(SenderCategorizer(), args.input, args.verbose)
+    filter = EmptyFilter()
+    vocab_analyzer = VocabularyAnalyzer(SenderCategorizer(), args.input, args.verbose, filter, 0.01)
 
     vocab_analyzer.generate_vocabulary()
     vocab_analyzer.calculate_average_vocab()

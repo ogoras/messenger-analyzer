@@ -7,7 +7,7 @@ from ..lib.conversions import decode_fb
 from ..lib.lexical_processing import process_word
 
 class VocabularyAnalyzer:
-    def __init__(self, categorizer : Categorizer = SenderCategorizer(), path = None, verbose = 0):
+    def __init__(self, categorizer : Categorizer = SenderCategorizer(), path = None, verbose = 0, master_filter : Filter = EmptyFilter(), default_bias : float = 0.01):
         self.vocabs_by_category : dict[any, Vocabulary] = {}
         self.average_vocab = Vocabulary()
         self.total_vocab = Vocabulary()
@@ -16,9 +16,11 @@ class VocabularyAnalyzer:
         self.sorted = False
         self.path = loader.parse_folder(path, "<script name>")
         self.verbose = verbose
+        self.filter = master_filter
+        self.default_bias = default_bias
 
     def generate_vocabulary(self):
-        for (subfolder, conversation_folder, thread, message) in loader.gen_messages(self.path, EmptyFilter(), verbose = self.verbose > 1):
+        for (subfolder, conversation_folder, thread, message) in loader.gen_messages(self.path, self.filter, verbose = self.verbose > 1):
             self.add_message_to_vocabulary(subfolder, conversation_folder, thread, message)
 
     def add_message_to_vocabulary(self, subfolder, conversation_folder, thread, message):
@@ -54,7 +56,7 @@ class VocabularyAnalyzer:
 
     def get_relative_vocab(self, filter : Filter, bias : float = 0, scaled = True):
         relative_vocab = Vocabulary()
-        for (subfolder, conversation_folder, thread, message) in loader.gen_messages(self.path, filter):
+        for (subfolder, conversation_folder, thread, message) in loader.gen_messages(self.path, filter & self.filter):
             if "content" in message:
                 content = decode_fb(message["content"])
                 relative_vocab.add_content(content)
@@ -66,10 +68,10 @@ class VocabularyAnalyzer:
 
     def print_characteristic_vocab(self, category, n_words=10, scaled=True):
         if scaled:
-            self.vocabs_by_category[category].relate(self.average_vocab, 0.01)
+            self.vocabs_by_category[category].relate(self.average_vocab, self.default_bias)
         else:
-            self.vocabs_by_category[category].relate(self.total_vocab, 0.01)
-        self.vocabs_by_category[category].print(n_words, True, self.get_vocab().dict)
+            self.vocabs_by_category[category].relate(self.total_vocab, self.default_bias)
+        self.vocabs_by_category[category].print(n_words, True, self.get_vocab())
 
     def sort(self):
         if self.sorted == True:
