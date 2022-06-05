@@ -46,6 +46,7 @@ class VocabularyAnalyzer:
             for word in self.vocabs_by_category[category].dict:
                 self.average_vocab.increment(word, self.vocabs_by_category[category].dict[word]/self.vocabs_by_category[category].word_count*magnitude_order)
         
+        #TODO: bias as a parameter?
         self.average_vocab.normalize(0.01)
 
     def get_vocab(self, category = None):

@@ -63,7 +63,7 @@ def read_folder(conversation_folder):
 
 def gen_messages(master_folder, filter : Filter = EmptyFilter(), verbose=False):
 
-    for subfolder in ["archived_threads", "filtered_threads", "inbox"]:
+    for subfolder in ["archived_threads", "filtered_threads", "inbox", "message_requests"]:
         if not os.path.isdir(os.path.join(master_folder, subfolder)):
             continue
         for conversation_folder in os.listdir(os.path.join(master_folder, subfolder)):
